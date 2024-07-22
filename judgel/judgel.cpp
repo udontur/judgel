@@ -1,4 +1,4 @@
-#include <iostream> //Add RTE
+#include <iostream>
 #include <chrono>
 #include <filesystem>
 #include <fstream>
@@ -77,7 +77,6 @@ int main(int argc, char *argv[]){
     cout<<"\n";
     if(argc==1){
         cout<<"Judgel - Simple local Competitive programming Judge\n";
-        //... To do help page
         return 0;
     }
     if(argc!=3){

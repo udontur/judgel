@@ -1,6 +1,6 @@
 [START] Judgel - path/testcase program.cpp
 
-Test Case   Verdict   Time
+Test Case   Verdict    Time
   1/ 23       AC         1ms
   2/ 23       WA         1ms
   3/ 23       RTE        2ms

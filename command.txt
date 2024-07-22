@@ -1,0 +1,3 @@
+g++ judgel.cpp -o judgel.exe
+
+.\judgel.bat "C:\Users\hadri\code\judge\tasks\b\testcase" "C:\Users\hadri\code\judge\tasks\b\sol.cpp"

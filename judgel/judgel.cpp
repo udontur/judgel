@@ -1,3 +1,9 @@
+/**
+ * judgel - v1.0
+ * Made with passion, by Hadrian (@udontur)
+ * Source - github.com/udontur/judgel
+ * MIT license - Copyright © 2024 Hadrian Lau (github.com/udontur)
+**/
 #include <iostream>
 #include <chrono>
 #include <thread>
@@ -15,6 +21,8 @@ using namespace std::filesystem;
 #define RED "\033[31m"
 #define GREEN "\033[32m"
 #define YELLOW "\033[33m"
+#define BLUE    "\033[34m"
+#define GREY   "\033[90m"
 CHAR my_documents[MAX_PATH];
 HRESULT result = SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, my_documents);
 const path TemporaryDirectoryPath=result+"\\judgel-temp";
@@ -28,16 +36,16 @@ string MakeRunCommand(path CurrentFilePath);
 void MakeNewFile(path CurrentFilePath);
 string CurrentTestCaseCountOutputConverter(path CurrentTestCase);
 string CurrentRuntimeOutputConverter(int Runtime);
+void PrintHelpPage();
 int main(int argc, char *argv[]){
-    system ("CLS");
     remove_all(TemporaryDirectoryPath);
-    cout<<"\n";
     if(argc==1){
-        cout<<"Judgel - Simple local Competitive programming Judge\n";
+        PrintHelpPage();
         return 0;
     }
     if(argc!=3){
-        cout<<"Invalid Argument\n";
+        cout<<RED<<"\nInvalid Argument\n"<<RESET;
+        PrintHelpPage();
         return 0;
     }
     MakeNewDirectory(TemporaryDirectoryPath);
@@ -47,17 +55,16 @@ int main(int argc, char *argv[]){
     //cout<<"User Program path: "<<UserProgramCppPath<<"\n";
     string CompileCommand=MakeCompileCommand(UserProgramCppPath);
     //cout<<"Compile command: "<<compileCmd<<"\n";
+    system ("CLS");
     cout<<"Compiling program...\n\n";
     system(CompileCommand.c_str());
     if(!exists(TemporaryUserProgramPath)){
-        cout<<YELLOW<<"\nABORT: Compilation Error\n\n"<<RESET;
+        cout<<YELLOW<<"\nJUDGEL (ABORT): Compilation Error\n\n"<<RESET;
         remove_all(TemporaryDirectoryPath);
         _exit(0);
         return 0;
     }
-    cout<<left<<setw(TerminalColumnWidth)<<"Test";
-    cout<<setw(TerminalColumnWidth)<<"Verdict";
-    cout<<right<<setw(TerminalColumnWidth)<<"Time\n";
+    cout<<"Test    Verdict   Time\n";
     int TestCaseCount=0, MaximumRuntime=0, FinalVerdict=0, CurrentTestCaseRuntime;
     for(path CurrentTestCase: directory_iterator(TestCaseDirectoryPath)){
         if(TestCaseCount%2){
@@ -66,22 +73,22 @@ int main(int argc, char *argv[]){
             if(CurrentVerdictResult==0){
                 FinalVerdict=max(FinalVerdict, 0);
                 cout<<left<<setw(TerminalColumnWidth)<<CurrentTestCaseCountOutputConverter(CurrentTestCase)+":";
-                cout<<setw(TerminalColumnWidth)<<YELLOW<<"RTE"<<RESET;
-                cout<<right<<setw(TerminalColumnWidth)<<"--ms\n\n";
-                cout<<YELLOW<<"ABORT: Runtime Error\n\n"<<RESET;
+                cout<<YELLOW<<"  RTE  "<<RESET;
+                cout<<right<<setw(TerminalColumnWidth-1)<<"--ms\n\n";
+                cout<<YELLOW<<"JUDGEL (ABORT): Runtime Error\n\n"<<RESET;
                 remove_all(TemporaryDirectoryPath);
                 _exit(0);
                 return 0;
             }else if(CurrentVerdictResult==2){
                 FinalVerdict=max(FinalVerdict, 2);
                 cout<<left<<setw(TerminalColumnWidth)<<CurrentTestCaseCountOutputConverter(CurrentTestCase)+":";
-                cout<<setw(TerminalColumnWidth)<<RED<<"WA"<<RESET;
-                cout<<right<<setw(TerminalColumnWidth)<<CurrentRuntimeOutputConverter(CurrentTestCaseRuntime)+"ms\n";
+                cout<<RED<<"  WA    "<<RESET;
+                cout<<right<<setw(TerminalColumnWidth-1)<<to_string(CurrentTestCaseRuntime)+"ms\n";
             }else if(CurrentVerdictResult==1){
                 FinalVerdict=max(FinalVerdict, 1);
                 cout<<left<<setw(TerminalColumnWidth)<<CurrentTestCaseCountOutputConverter(CurrentTestCase)+":";
-                cout<<setw(TerminalColumnWidth)<<GREEN<<"AC"<<RESET;
-                cout<<right<<setw(TerminalColumnWidth)<<CurrentRuntimeOutputConverter(CurrentTestCaseRuntime)+"ms\n";
+                cout<<GREEN<<"  AC    "<<RESET;
+                cout<<right<<setw(TerminalColumnWidth-1)<<to_string(CurrentTestCaseRuntime)+"ms\n";
             }
             remove(TemporaryOutputPath);
             MakeNewFile(TemporaryOutputPath);
@@ -98,9 +105,9 @@ int main(int argc, char *argv[]){
             auto UserProgramFuture=async(launch::async, RunSystem);
             if(UserProgramFuture.wait_for(seconds(2))==future_status::timeout){
                 cout<<left<<setw(TerminalColumnWidth)<<CurrentTestCaseCountOutputConverter(CurrentTestCase)+":";
-                cout<<setw(TerminalColumnWidth)<<YELLOW<<"TLE"<<RESET;
-                cout<<right<<setw(TerminalColumnWidth)<<CurrentRuntimeOutputConverter(CurrentTestCaseRuntime)+"2000ms+\n\n";
-                cout<<YELLOW<<"ABORT: Time Limit Exceed\n\n"<<RESET;
+                cout<<YELLOW<<"  TLE  "<<RESET;
+                cout<<right<<setw(TerminalColumnWidth-1)<<">2000ms\n\n";
+                cout<<YELLOW<<"JUDGEL (ABORT): Time Limit Exceed\n\n"<<RESET;
                 //cannot remove
                 _exit(0);
                 return 0;
@@ -114,12 +121,12 @@ int main(int argc, char *argv[]){
     cout<<"\n";
     if(FinalVerdict==2){
         cout<<RED;
-        cout<<"JUDGE: Wrong Answer ";
+        cout<<"JUDGEL: Wrong Answer ";
         cout<<MaximumRuntime<<"ms\n";
         cout<<RESET;
     }else if(FinalVerdict==1){
         cout<<GREEN;
-        cout<<"JUDGE: Accepted ";
+        cout<<"JUDGEL: Accepted ";
         cout<<MaximumRuntime<<"ms\n";
         cout<<RESET;
     }
@@ -181,4 +188,19 @@ string CurrentRuntimeOutputConverter(int Runtime){
     else if(Runtime<100) CurrentRuntimeOutput+=" ";
     CurrentRuntimeOutput+=to_string(Runtime);
     return CurrentRuntimeOutput;
+}
+void PrintHelpPage(){
+    cout<<GREY<<"\nUsage: "<<RESET;
+    cout<<GREEN<<"judgel ";
+    cout<<YELLOW<<"<TIME_LIMIT> ";
+    cout<<BLUE<<"<TESTCASE/PATH> <CPPFILE_PATH>\n\n";
+    cout<<RESET;
+    cout<<GREEN<<"Judgel"<<RESET;
+    cout<<" - Simple local C++ judge\n";
+    cout<<"Made with ";
+    cout<<GREEN<<"passion"<<RESET;
+    cout<<", by ";
+    cout<<GREEN<<"Hadrian (@udontur)\n"<<RESET;
+    cout<<GREY<<"Source: github.com/udontur/judgel\n";
+    cout<<"MIT license - Copyright (c) 2024 Hadrian Lau (github.com/udontur)\n\n"<<RESET;
 }

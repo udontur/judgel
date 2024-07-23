@@ -38,13 +38,15 @@ string CurrentTestCaseCountOutputConverter(path CurrentTestCase);
 string CurrentRuntimeOutputConverter(int Runtime);
 void PrintHelpPage();
 int main(int argc, char *argv[]){
-    if(is_directory(TemporaryDirectoryPath)){
-        cout<<ColorRed<<"\nJUDGEL: Please resubmit your request "<<ColorReset;
-        cout<<ColorGray<<"(Learn more at github.com/udontur/judgel/README.md#error\n"<<ColorReset;
+    try{
+        remove_all(TemporaryDirectoryPath);
+    }catch(const filesystem_error){
+        cout<<ColorRed<<"\nJUDGEL: Please wait a while and resubmit your request\n"<<ColorReset;
+        cout<<ColorGray<<"Learn more at github.com/udontur/judgel/README.md#error-please-resubmit-your-request\n"<<ColorReset;
         _exit(0);
         return 0;
     }
-    remove_all(TemporaryDirectoryPath);
+    
     if(argc!=4){
         if(argc!=1) cout<<ColorRed<<"\nInvalid Arguments\n"<<ColorReset;
         PrintHelpPage();
@@ -59,7 +61,6 @@ int main(int argc, char *argv[]){
     system ("CLS");
     cout<<ColorGray<<"Compiling program...\n"<<ColorReset;
     system(CompileCommand.c_str());
-    system ("CLS");
     cout<<"\n";
     if(!exists(TemporaryUserProgramPath)){
         cout<<ColorYellow<<"\nJUDGEL (ABORT): Compilation Error\n"<<ColorReset;
@@ -67,6 +68,7 @@ int main(int argc, char *argv[]){
         _exit(0);
         return 0;
     }
+    system ("CLS");
     cout<<ColorGray<<"Test    Verdict   Time\n"<<ColorReset;
     int TestCaseCount=0, MaximumRuntime=0, FinalVerdict=0, CurrentTestCaseRuntime;
     for(path CurrentTestCase: directory_iterator(TestCaseDirectoryPath)){

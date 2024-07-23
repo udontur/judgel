@@ -1,0 +1,7 @@
+g++ judgel.cpp -o judgel.exe
+
+.\judgel.bat "C:\Users\hadri\code\judge\tasks\b\testcase" "C:\Users\hadri\code\judge\tasks\b\sol.cpp"
+
+.\judgel C:\Users\hadri\code\github\judgel\asset\tests\ac\testcase C:\Users\hadri\code\github\judgel\asset\tests\ac\sol.cpp
+
+Test    Verdict    Time

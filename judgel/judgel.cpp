@@ -4,6 +4,7 @@
 #include <future>
 #include <filesystem>
 #include <fstream>
+#include <iomanip>
 #include <windows.h>
 #include <Lmcons.h>
 #include <shlobj.h>
@@ -19,15 +20,17 @@ HRESULT result = SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT,
 const path TemporaryDirectoryPath=result+"\\judgel-temp";
 const path TemporaryOutputPath=TemporaryDirectoryPath.u8string()+"\\out.txt";
 const path TemporaryUserProgramPath=TemporaryDirectoryPath.u8string()+"\\prg.exe";
-bool OutputCompare(path TestCaseOutput, path UserProgramOutput);
+const int TerminalColumnWidth=8;
+int OutputCompare(path TestCaseOutput, path UserProgramOutput);
 void MakeNewDirectory(path Directory);
 string MakeCompileCommand(path CurrentFilePath);
 string MakeRunCommand(path CurrentFilePath);
 void MakeNewFile(path CurrentFilePath);
-string CurrentTestCaseCountOutputConverter(int TestCaseCount);
+string CurrentTestCaseCountOutputConverter(path CurrentTestCase);
 string CurrentRuntimeOutputConverter(int Runtime);
 int main(int argc, char *argv[]){
     system ("CLS");
+    remove_all(TemporaryDirectoryPath);
     cout<<"\n";
     if(argc==1){
         cout<<"Judgel - Simple local Competitive programming Judge\n";
@@ -44,24 +47,41 @@ int main(int argc, char *argv[]){
     //cout<<"User Program path: "<<UserProgramCppPath<<"\n";
     string CompileCommand=MakeCompileCommand(UserProgramCppPath);
     //cout<<"Compile command: "<<compileCmd<<"\n";
-    cout<<"Compiling program...\n";
+    cout<<"Compiling program...\n\n";
     system(CompileCommand.c_str());
-    cout<<"Compilation finished!\n\n";
-    cout<<"Test  Verdict  Time\n";
+    if(!exists(TemporaryUserProgramPath)){
+        cout<<YELLOW<<"\nABORT: Compilation Error\n\n"<<RESET;
+        remove_all(TemporaryDirectoryPath);
+        _exit(0);
+        return 0;
+    }
+    cout<<left<<setw(TerminalColumnWidth)<<"Test";
+    cout<<setw(TerminalColumnWidth)<<"Verdict";
+    cout<<right<<setw(TerminalColumnWidth)<<"Time\n";
     int TestCaseCount=0, MaximumRuntime=0, FinalVerdict=0, CurrentTestCaseRuntime;
     for(path CurrentTestCase: directory_iterator(TestCaseDirectoryPath)){
         if(TestCaseCount%2){
             MaximumRuntime=max(MaximumRuntime, CurrentTestCaseRuntime);
-            if(OutputCompare(CurrentTestCase, TemporaryOutputPath)){
+            int CurrentVerdictResult=OutputCompare(CurrentTestCase, TemporaryOutputPath);
+            if(CurrentVerdictResult==0){
                 FinalVerdict=max(FinalVerdict, 0);
-                cout<<CurrentTestCaseCountOutputConverter(TestCaseCount/2);
-                cout<<":    "<<GREEN<<"AC"<<RESET<<"     ";
-                cout<<CurrentRuntimeOutputConverter(CurrentTestCaseRuntime)<<"ms\n";
-            }else{
+                cout<<left<<setw(TerminalColumnWidth)<<CurrentTestCaseCountOutputConverter(CurrentTestCase)+":";
+                cout<<setw(TerminalColumnWidth)<<YELLOW<<"RTE"<<RESET;
+                cout<<right<<setw(TerminalColumnWidth)<<"--ms\n\n";
+                cout<<YELLOW<<"ABORT: Runtime Error\n\n"<<RESET;
+                remove_all(TemporaryDirectoryPath);
+                _exit(0);
+                return 0;
+            }else if(CurrentVerdictResult==2){
+                FinalVerdict=max(FinalVerdict, 2);
+                cout<<left<<setw(TerminalColumnWidth)<<CurrentTestCaseCountOutputConverter(CurrentTestCase)+":";
+                cout<<setw(TerminalColumnWidth)<<RED<<"WA"<<RESET;
+                cout<<right<<setw(TerminalColumnWidth)<<CurrentRuntimeOutputConverter(CurrentTestCaseRuntime)+"ms\n";
+            }else if(CurrentVerdictResult==1){
                 FinalVerdict=max(FinalVerdict, 1);
-                cout<<CurrentTestCaseCountOutputConverter(TestCaseCount/2);
-                cout<<":    "<<RED<<"WA"<<RESET<<"     ";
-                cout<<CurrentRuntimeOutputConverter(CurrentTestCaseRuntime)<<"ms\n";
+                cout<<left<<setw(TerminalColumnWidth)<<CurrentTestCaseCountOutputConverter(CurrentTestCase)+":";
+                cout<<setw(TerminalColumnWidth)<<GREEN<<"AC"<<RESET;
+                cout<<right<<setw(TerminalColumnWidth)<<CurrentRuntimeOutputConverter(CurrentTestCaseRuntime)+"ms\n";
             }
             remove(TemporaryOutputPath);
             MakeNewFile(TemporaryOutputPath);
@@ -77,10 +97,11 @@ int main(int argc, char *argv[]){
             };
             auto UserProgramFuture=async(launch::async, RunSystem);
             if(UserProgramFuture.wait_for(seconds(2))==future_status::timeout){
-                cout<<CurrentTestCaseCountOutputConverter((TestCaseCount+1)/2);
-                cout<<":    "<<YELLOW<<"TLE"<<RESET<<"   ";
-                cout<<"2000ms+\n";
+                cout<<left<<setw(TerminalColumnWidth)<<CurrentTestCaseCountOutputConverter(CurrentTestCase)+":";
+                cout<<setw(TerminalColumnWidth)<<YELLOW<<"TLE"<<RESET;
+                cout<<right<<setw(TerminalColumnWidth)<<CurrentRuntimeOutputConverter(CurrentTestCaseRuntime)+"2000ms+\n\n";
                 cout<<YELLOW<<"ABORT: Time Limit Exceed\n\n"<<RESET;
+                //cannot remove
                 _exit(0);
                 return 0;
             }
@@ -91,34 +112,36 @@ int main(int argc, char *argv[]){
     }
     remove_all(TemporaryDirectoryPath);
     cout<<"\n";
-    if(FinalVerdict==0){
-        cout<<GREEN;
-        cout<<"JUDGE: Accepted ";
-        cout<<MaximumRuntime<<"ms\n";
-        cout<<RESET;
-    }else if(FinalVerdict==1){
+    if(FinalVerdict==2){
         cout<<RED;
         cout<<"JUDGE: Wrong Answer ";
         cout<<MaximumRuntime<<"ms\n";
         cout<<RESET;
+    }else if(FinalVerdict==1){
+        cout<<GREEN;
+        cout<<"JUDGE: Accepted ";
+        cout<<MaximumRuntime<<"ms\n";
+        cout<<RESET;
     }
     cout<<"\n";
+    _exit(0);
     return 0;
 }
-bool OutputCompare(path TestCaseOutput, path UserProgramOutput){
+int OutputCompare(path TestCaseOutput, path UserProgramOutput){
+    if(file_size(UserProgramOutput)==0) return 0;
     ifstream TestCaseFout(TestCaseOutput);
     ifstream UserProgramFout(UserProgramOutput);
     while(!TestCaseFout.eof()){
         string CurrentStringTestCase, CurrentStringUserProgram;
         TestCaseFout>>CurrentStringTestCase;
         UserProgramFout>>CurrentStringUserProgram;
-        if(CurrentStringUserProgram!=CurrentStringTestCase) return 0;
+        if(CurrentStringUserProgram!=CurrentStringTestCase) return 2;
     }
     while(!UserProgramFout.eof()){
         string CurrentStringTestCase, CurrentStringUserProgram;
         TestCaseFout>>CurrentStringTestCase;
         UserProgramFout>>CurrentStringUserProgram;
-        if(CurrentStringUserProgram!=CurrentStringTestCase) return 0;
+        if(CurrentStringUserProgram!=CurrentStringTestCase) return 2;
     }
     return 1;
 }
@@ -147,12 +170,10 @@ void MakeNewFile(path CurrentFilePath){
     ifstream tmp;
     tmp.open(CurrentFilePath);
 }
-string CurrentTestCaseCountOutputConverter(int TestCaseCount){
-    string TestCaseCountOutput="";
-    if(TestCaseCount<10) TestCaseCountOutput+="00";
-    else if(TestCaseCount) TestCaseCountOutput+="0";
-    TestCaseCountOutput+=to_string(TestCaseCount);
-    return TestCaseCountOutput;
+string CurrentTestCaseCountOutputConverter(path TestCasePath){
+    string TestCaseOutput="";
+    TestCaseOutput+=TestCasePath.stem().u8string();
+    return TestCaseOutput;
 }
 string CurrentRuntimeOutputConverter(int Runtime){
     string CurrentRuntimeOutput="";

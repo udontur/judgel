@@ -38,27 +38,36 @@ string CurrentTestCaseCountOutputConverter(path CurrentTestCase);
 string CurrentRuntimeOutputConverter(int Runtime);
 void PrintHelpPage();
 int main(int argc, char *argv[]){
+    if(is_directory(TemporaryDirectoryPath)){
+        cout<<ColorRed<<"\nJUDGEL: Please resubmit your request "<<ColorReset;
+        cout<<ColorGray<<"(Learn more at github.com/udontur/judgel/README.md#error\n"<<ColorReset;
+        _exit(0);
+        return 0;
+    }
     remove_all(TemporaryDirectoryPath);
-    if(argc!=3){
-        if(argc!=1) cout<<ColorRed<<"\nInvalid Argument\n"<<ColorReset;
+    if(argc!=4){
+        if(argc!=1) cout<<ColorRed<<"\nInvalid Arguments\n"<<ColorReset;
         PrintHelpPage();
         _exit(0);
         return 0;
     }
     MakeNewDirectory(TemporaryDirectoryPath);
-    path TestCaseDirectoryPath=argv[1];
-    path UserProgramCppPath=argv[2];
+    int RuntimeTimeLimit=stoi(argv[1]);
+    path TestCaseDirectoryPath=argv[2];
+    path UserProgramCppPath=argv[3];
     string CompileCommand=MakeCompileCommand(UserProgramCppPath);
     system ("CLS");
-    cout<<"Compiling program...\n\n";
+    cout<<ColorGray<<"Compiling program...\n"<<ColorReset;
     system(CompileCommand.c_str());
+    system ("CLS");
+    cout<<"\n";
     if(!exists(TemporaryUserProgramPath)){
-        cout<<ColorYellow<<"\nJUDGEL (ABORT): Compilation Error\n\n"<<ColorReset;
+        cout<<ColorYellow<<"\nJUDGEL (ABORT): Compilation Error\n"<<ColorReset;
         remove_all(TemporaryDirectoryPath);
         _exit(0);
         return 0;
     }
-    cout<<"Test    Verdict   Time\n";
+    cout<<ColorGray<<"Test    Verdict   Time\n"<<ColorReset;
     int TestCaseCount=0, MaximumRuntime=0, FinalVerdict=0, CurrentTestCaseRuntime;
     for(path CurrentTestCase: directory_iterator(TestCaseDirectoryPath)){
         if(TestCaseCount%2){
@@ -69,7 +78,8 @@ int main(int argc, char *argv[]){
                 cout<<left<<setw(TerminalColumnWidth)<<CurrentTestCaseCountOutputConverter(CurrentTestCase)+":";
                 cout<<ColorYellow<<"  RTE  "<<ColorReset;
                 cout<<"   --ms\n\n";
-                cout<<ColorYellow<<"JUDGEL (ABORT): Runtime Error\n\n"<<ColorReset;
+                cout<<ColorYellow<<"JUDGEL (ABORT): Runtime Error\n"<<ColorReset;
+                remove_all(TemporaryDirectoryPath);
                 _exit(0);
                 return 0;
             }else if(CurrentVerdictResult==2){
@@ -95,11 +105,11 @@ int main(int argc, char *argv[]){
                 UserProgramThreadStop=high_resolution_clock::now();
             };
             auto UserProgramFuture=async(launch::async, RunSystem);
-            if(UserProgramFuture.wait_for(seconds(3))==future_status::timeout){
+            if(UserProgramFuture.wait_for(seconds(RuntimeTimeLimit))==future_status::timeout){
                 cout<<left<<setw(TerminalColumnWidth)<<CurrentTestCaseCountOutputConverter(CurrentTestCase)+":";
                 cout<<ColorYellow<<"  TLE  "<<ColorReset;
-                cout<<right<<setw(TerminalColumnWidth-1)<<">3000ms\n\n";
-                cout<<ColorYellow<<"JUDGEL (ABORT): Time Limit Exceed\n\n"<<ColorReset;
+                cout<<right<<setw(TerminalColumnWidth-1)<<">"+to_string(RuntimeTimeLimit*1000)+"ms\n\n";
+                cout<<ColorYellow<<"JUDGEL (ABORT): Time Limit Exceed\n"<<ColorReset;
                 _exit(0);
                 return 0;
             }
@@ -108,7 +118,6 @@ int main(int argc, char *argv[]){
         }
         TestCaseCount++;
     }
-    remove_all(TemporaryDirectoryPath);
     cout<<"\n";
     if(FinalVerdict==1){
         cout<<ColorGreen;
@@ -122,10 +131,10 @@ int main(int argc, char *argv[]){
         cout<<ColorReset;
     }else{
         cout<<ColorRed;
-        cout<<"JUDGEL: A bug has been detected, please report it via github.com/udontur/judgel/issues. Thank you.";
+        cout<<"JUDGEL: A bug has been detected, please report it via github.com/udontur/judgel/issues. Thank you.\n";
         cout<<ColorReset;
     }
-    cout<<"\n";
+    remove_all(TemporaryDirectoryPath);
     _exit(0);
     return 0;
 }
@@ -185,7 +194,7 @@ string CurrentRuntimeOutputConverter(int Runtime){
 void PrintHelpPage(){
     cout<<ColorGray<<"\nUsage: "<<ColorReset;
     cout<<ColorGreen<<"judgel ";
-    cout<<ColorYellow<<"<TIME_LIMIT> ";
+    cout<<ColorYellow<<"<TIME_LIMIT(s, int)> ";
     cout<<ColorBlue<<"<TESTCASE/PATH> <CPPFILE_PATH>\n\n";
     cout<<ColorReset;
     cout<<ColorGreen<<"Judgel"<<ColorReset;

@@ -1,7 +1,7 @@
-g++ judgel.cpp -o judgel.exe
+g++ C:\Users\hadri\code\github\judgel\judgel\judgel.cpp -o C:\Users\hadri\code\github\judgel\judgel\judgel.exe
 
-.\judgel.bat "C:\Users\hadri\code\judge\tasks\b\testcase" "C:\Users\hadri\code\judge\tasks\b\sol.cpp"
-
-.\judgel C:\Users\hadri\code\github\judgel\asset\tests\ac\testcase C:\Users\hadri\code\github\judgel\asset\tests\ac\sol.cpp
-
-Test    Verdict    Time
+judgel C:\Users\hadri\code\github\judgel\asset\tests\ac\testcase C:\Users\hadri\code\github\judgel\asset\tests\ac\sol.cpp
+judgel C:\Users\hadri\code\github\judgel\asset\tests\wa\testcase C:\Users\hadri\code\github\judgel\asset\tests\wa\sol.cpp
+judgel C:\Users\hadri\code\github\judgel\asset\tests\rte\testcase C:\Users\hadri\code\github\judgel\asset\tests\rte\sol.cpp
+judgel C:\Users\hadri\code\github\judgel\asset\tests\tle\testcase C:\Users\hadri\code\github\judgel\asset\tests\tle\sol.cpp
+judgel C:\Users\hadri\code\github\judgel\asset\tests\ca\testcase C:\Users\hadri\code\github\judgel\asset\tests\ca\sol.cpp

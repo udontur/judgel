@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 #define ll long long
 using namespace std;
-ll n, m, r[201], p[10001], pre[10001], dp[10001][201], ans = 0;
+ll n, m, r[201], p[20001], pre[20001], dp[20001][201], ans = 0;
 struct Line {
 	mutable ll k, m, p;
 	bool operator<(const Line& o) const { return k < o.k; }

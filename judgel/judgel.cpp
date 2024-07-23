@@ -17,12 +17,12 @@
 using namespace std; 
 using namespace std::chrono;
 using namespace std::filesystem;
-#define RESET "\033[0m"
-#define RED "\033[31m"
-#define GREEN "\033[32m"
-#define YELLOW "\033[33m"
-#define BLUE    "\033[34m"
-#define GREY   "\033[90m"
+#define ColorReset "\033[0m"
+#define ColorRed "\033[31m"
+#define ColorGreen "\033[32m"
+#define ColorYellow "\033[33m"
+#define ColorBlue "\033[34m"
+#define ColorGray "\033[90m"
 CHAR my_documents[MAX_PATH];
 HRESULT result = SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, my_documents);
 const path TemporaryDirectoryPath=result+"\\judgel-temp";
@@ -39,13 +39,10 @@ string CurrentRuntimeOutputConverter(int Runtime);
 void PrintHelpPage();
 int main(int argc, char *argv[]){
     remove_all(TemporaryDirectoryPath);
-    if(argc==1){
-        PrintHelpPage();
-        return 0;
-    }
     if(argc!=3){
-        cout<<RED<<"\nInvalid Argument\n"<<RESET;
+        if(argc!=1) cout<<ColorRed<<"\nInvalid Argument\n"<<ColorReset;
         PrintHelpPage();
+        _exit(0);
         return 0;
     }
     MakeNewDirectory(TemporaryDirectoryPath);
@@ -59,7 +56,7 @@ int main(int argc, char *argv[]){
     cout<<"Compiling program...\n\n";
     system(CompileCommand.c_str());
     if(!exists(TemporaryUserProgramPath)){
-        cout<<YELLOW<<"\nJUDGEL (ABORT): Compilation Error\n\n"<<RESET;
+        cout<<ColorYellow<<"\nJUDGEL (ABORT): Compilation Error\n\n"<<ColorReset;
         remove_all(TemporaryDirectoryPath);
         _exit(0);
         return 0;
@@ -73,21 +70,20 @@ int main(int argc, char *argv[]){
             if(CurrentVerdictResult==0){
                 FinalVerdict=max(FinalVerdict, 0);
                 cout<<left<<setw(TerminalColumnWidth)<<CurrentTestCaseCountOutputConverter(CurrentTestCase)+":";
-                cout<<YELLOW<<"  RTE  "<<RESET;
-                cout<<right<<setw(TerminalColumnWidth-1)<<"--ms\n\n";
-                cout<<YELLOW<<"JUDGEL (ABORT): Runtime Error\n\n"<<RESET;
-                remove_all(TemporaryDirectoryPath);
+                cout<<ColorYellow<<"  RTE  "<<ColorReset;
+                cout<<"   --ms\n\n";
+                cout<<ColorYellow<<"JUDGEL (ABORT): Runtime Error\n\n"<<ColorReset;
                 _exit(0);
                 return 0;
             }else if(CurrentVerdictResult==2){
                 FinalVerdict=max(FinalVerdict, 2);
                 cout<<left<<setw(TerminalColumnWidth)<<CurrentTestCaseCountOutputConverter(CurrentTestCase)+":";
-                cout<<RED<<"  WA    "<<RESET;
+                cout<<ColorRed<<"  WA    "<<ColorReset;
                 cout<<right<<setw(TerminalColumnWidth-1)<<to_string(CurrentTestCaseRuntime)+"ms\n";
             }else if(CurrentVerdictResult==1){
                 FinalVerdict=max(FinalVerdict, 1);
                 cout<<left<<setw(TerminalColumnWidth)<<CurrentTestCaseCountOutputConverter(CurrentTestCase)+":";
-                cout<<GREEN<<"  AC    "<<RESET;
+                cout<<ColorGreen<<"  AC    "<<ColorReset;
                 cout<<right<<setw(TerminalColumnWidth-1)<<to_string(CurrentTestCaseRuntime)+"ms\n";
             }
             remove(TemporaryOutputPath);
@@ -103,12 +99,11 @@ int main(int argc, char *argv[]){
                 UserProgramThreadStop=high_resolution_clock::now();
             };
             auto UserProgramFuture=async(launch::async, RunSystem);
-            if(UserProgramFuture.wait_for(seconds(2))==future_status::timeout){
+            if(UserProgramFuture.wait_for(seconds(3))==future_status::timeout){
                 cout<<left<<setw(TerminalColumnWidth)<<CurrentTestCaseCountOutputConverter(CurrentTestCase)+":";
-                cout<<YELLOW<<"  TLE  "<<RESET;
-                cout<<right<<setw(TerminalColumnWidth-1)<<">2000ms\n\n";
-                cout<<YELLOW<<"JUDGEL (ABORT): Time Limit Exceed\n\n"<<RESET;
-                //cannot remove
+                cout<<ColorYellow<<"  TLE  "<<ColorReset;
+                cout<<right<<setw(TerminalColumnWidth-1)<<">3000ms\n\n";
+                cout<<ColorYellow<<"JUDGEL (ABORT): Time Limit Exceed\n\n"<<ColorReset;
                 _exit(0);
                 return 0;
             }
@@ -119,16 +114,20 @@ int main(int argc, char *argv[]){
     }
     remove_all(TemporaryDirectoryPath);
     cout<<"\n";
-    if(FinalVerdict==2){
-        cout<<RED;
-        cout<<"JUDGEL: Wrong Answer ";
-        cout<<MaximumRuntime<<"ms\n";
-        cout<<RESET;
-    }else if(FinalVerdict==1){
-        cout<<GREEN;
+    if(FinalVerdict==1){
+        cout<<ColorGreen;
         cout<<"JUDGEL: Accepted ";
         cout<<MaximumRuntime<<"ms\n";
-        cout<<RESET;
+        cout<<ColorReset;
+    }else if(FinalVerdict==2){
+        cout<<ColorRed;
+        cout<<"JUDGEL: Wrong Answer ";
+        cout<<MaximumRuntime<<"ms\n";
+        cout<<ColorReset;
+    }else{
+        cout<<ColorRed;
+        cout<<"JUDGEL: A bug has been detected, please report it via github.com/udontur/judgel/issues. Thank you.";
+        cout<<ColorReset;
     }
     cout<<"\n";
     _exit(0);
@@ -190,17 +189,17 @@ string CurrentRuntimeOutputConverter(int Runtime){
     return CurrentRuntimeOutput;
 }
 void PrintHelpPage(){
-    cout<<GREY<<"\nUsage: "<<RESET;
-    cout<<GREEN<<"judgel ";
-    cout<<YELLOW<<"<TIME_LIMIT> ";
-    cout<<BLUE<<"<TESTCASE/PATH> <CPPFILE_PATH>\n\n";
-    cout<<RESET;
-    cout<<GREEN<<"Judgel"<<RESET;
+    cout<<ColorGray<<"\nUsage: "<<ColorReset;
+    cout<<ColorGreen<<"judgel ";
+    cout<<ColorYellow<<"<TIME_LIMIT> ";
+    cout<<ColorBlue<<"<TESTCASE/PATH> <CPPFILE_PATH>\n\n";
+    cout<<ColorReset;
+    cout<<ColorGreen<<"Judgel"<<ColorReset;
     cout<<" - Simple local C++ judge\n";
     cout<<"Made with ";
-    cout<<GREEN<<"passion"<<RESET;
+    cout<<ColorGreen<<"passion"<<ColorReset;
     cout<<", by ";
-    cout<<GREEN<<"Hadrian (@udontur)\n"<<RESET;
-    cout<<GREY<<"Source: github.com/udontur/judgel\n";
-    cout<<"MIT license - Copyright (c) 2024 Hadrian Lau (github.com/udontur)\n\n"<<RESET;
+    cout<<ColorGreen<<"Hadrian (@udontur)\n"<<ColorReset;
+    cout<<ColorGray<<"Source: github.com/udontur/judgel\n";
+    cout<<"MIT license - Copyright (c) 2024 Hadrian Lau (github.com/udontur)\n\n"<<ColorReset;
 }

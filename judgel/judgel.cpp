@@ -23,7 +23,7 @@ using namespace std::filesystem;
 #define ColorYellow "\033[33m"
 #define ColorBlue "\033[34m"
 #define ColorGray "\033[90m"
-CHAR my_documents[MAX_PATH];
+char my_documents[MAX_PATH];
 HRESULT result = SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, my_documents);
 const path TemporaryDirectoryPath=result+"\\judgel-temp";
 const path TemporaryOutputPath=TemporaryDirectoryPath.u8string()+"\\out.txt";
@@ -48,10 +48,7 @@ int main(int argc, char *argv[]){
     MakeNewDirectory(TemporaryDirectoryPath);
     path TestCaseDirectoryPath=argv[1];
     path UserProgramCppPath=argv[2];
-    //cout<<"Test Case path: "<<TestCaseDirectoryPath<<"\n";
-    //cout<<"User Program path: "<<UserProgramCppPath<<"\n";
     string CompileCommand=MakeCompileCommand(UserProgramCppPath);
-    //cout<<"Compile command: "<<compileCmd<<"\n";
     system ("CLS");
     cout<<"Compiling program...\n\n";
     system(CompileCommand.c_str());
@@ -90,7 +87,6 @@ int main(int argc, char *argv[]){
             MakeNewFile(TemporaryOutputPath);
         }else{
             string RunCommand=MakeRunCommand(CurrentTestCase);
-            //cout<<"Program run command: "<<run<<"\n";
             time_point<high_resolution_clock> UserProgramThreadStart;
             time_point<high_resolution_clock> UserProgramThreadStop;
             auto RunSystem=[&UserProgramThreadStart, &RunCommand, &UserProgramThreadStop](){
@@ -156,7 +152,6 @@ void MakeNewDirectory(path Directory){
     create_directory(Directory);
 }
 string MakeCompileCommand(path CurrentFilePath){
-    //cout<<"MakeRunCommand: "<<CurrentFilePath.u8string()<<" "<<TemporaryUserProgramPath.u8string()<<"\n";
     string compileCmd="g++ ";
     compileCmd+=CurrentFilePath.u8string();
     compileCmd+=" -o ";
@@ -164,7 +159,6 @@ string MakeCompileCommand(path CurrentFilePath){
     return compileCmd;
 }
 string MakeRunCommand(path CurrentFilePath){
-    //cout<<"MakeRunCommand: "<<CurrentFilePath.u8string()<<" "<<TemporaryOutputPath.u8string()<<"\n";
     string run=TemporaryUserProgramPath.u8string();
     run+=" < ";
     run+=CurrentFilePath.u8string();

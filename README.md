@@ -1,2 +1,2 @@
-# judgel
-🧑‍⚖️ Simple local CLI judge
+# judgel DEVELOPING
+🧑‍⚖️ Simple local C++ judge

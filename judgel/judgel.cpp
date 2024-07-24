@@ -3,7 +3,7 @@
  * Made with passion, by Hadrian (@udontur)
  * Source - github.com/udontur/judgel
  * MIT license - Copyright © 2024 Hadrian Lau (github.com/udontur)
- **/
+**/
 //API header file
 #include <Lmcons.h>
 #include <shlobj.h>
@@ -43,15 +43,6 @@ string CurrentTestCaseCountOutputConverter(path CurrentTestCase);
 void PrintHelpPage();
 //Driver function
 int main(int argc, char *argv[]) {
-    //TLE request limit error handler
-    try {
-        remove_all(TemporaryDirectoryPath);
-    } catch (const filesystem_error) {
-        cout << ColorRed << "\nJUDGEL: Please wait before requesting\n" << ColorReset;
-        cout << ColorGray << "Learn more at github.com/udontur/judgel/README.md#request-limit\n" << ColorReset;
-        _exit(0);
-        return 0;
-    }
     //Invalid argument error handler
     if (argc != 4) {
         if (argc != 1) cout << ColorRed << "\nInvalid arguments\n" << ColorReset;
@@ -61,10 +52,38 @@ int main(int argc, char *argv[]) {
     }
     //Create standard temporary folder, guarantee to be clear
     create_directory(TemporaryDirectoryPath);
-    //Store arguments
-    int RuntimeTimeLimit = stoi(argv[1]);
+    //Argument input error handler, time limit
+    int RuntimeTimeLimit;
+    try{
+        RuntimeTimeLimit=stoi(argv[1]);
+    }catch(invalid_argument){
+        cout<<ColorRed;
+        cout<<"\nInvalid time argument\n";
+        cout<<ColorReset;
+        PrintHelpPage();
+        _exit(0);
+        return 0;
+    }
+    //Argument input error, testcase directory
     path TestCaseDirectoryPath = argv[2];
+    if(!exists(TestCaseDirectoryPath)){
+        cout<<ColorRed;
+        cout<<"\nTest Case path does not exist\n";
+        cout<<ColorReset;
+        PrintHelpPage();
+        _exit(0);
+        return 0;
+    }
+    //Arugment input error, user program code file
     path UserProgramCppPath = argv[3];
+    if(!exists(UserProgramCppPath)){
+        cout<<ColorRed;
+        cout<<"\nCode file path does not exist\n";
+        cout<<ColorReset;
+        PrintHelpPage();
+        _exit(0);
+        return 0;
+    }
     //Compile user's C++ code
     string CompileCommand = MakeCompileCommand(UserProgramCppPath);
     system("CLS");
@@ -73,15 +92,18 @@ int main(int argc, char *argv[]) {
     cout << "\n";
     //Compilation Error handler
     if (!exists(TemporaryUserProgramPath)) {
-        cout << ColorYellow << "\nJUDGEL (ABORT): Compilation Error\n" << ColorReset;
+        cout << ColorYellow << "JUDGEL: Compilation Error\n" << ColorReset;
+        //Session abortion without user program
+        //Remove temporary files
         remove_all(TemporaryDirectoryPath);
+        //Force exit program
         _exit(0);
         return 0;
     }
     system("CLS");
     //User's C++ code is compiled to standard prg.exe file path
     cout << ColorGray << "\nTest    Verdict   Time\n" << ColorReset;
-    int TestCaseCount = 0, MaximumRuntime = 0, FinalVerdict = 0, CurrentTestCaseRuntime;
+    int TestCaseCount = 0, MaximumRuntime = 0, FinalVerdict = -1, CurrentTestCaseRuntime;
     //Iterate through the given testcase folder
     for (path CurrentTestCase : directory_iterator(TestCaseDirectoryPath)) {
         //Each case consists of .in and .out, each alternating in an even and odd manner
@@ -96,10 +118,13 @@ int main(int argc, char *argv[]) {
                 //Terminal output message
                 cout << left << setw(TerminalColumnWidth) << CurrentTestCaseCountOutputConverter(CurrentTestCase) + ":";
                 cout << ColorYellow << "  RTE  " << ColorReset;
-                cout << "   --ms\n\n";
-                cout << ColorYellow << "JUDGEL (ABORT): Runtime Error\n" << ColorReset;
-                //Session abortion
+                cout << "   --ms\n";
+                cout<<ColorGray<<"---------ABORT--------\n\n"<<ColorReset;
+                cout << ColorYellow << "JUDGEL: Runtime Error\n" << ColorReset;
+                //Session abortion, the user program is ended
+                //Remove the temporary files
                 remove_all(TemporaryDirectoryPath);
+                //Force exit the program
                 _exit(0);
                 return 0;
             } else if (CurrentVerdictResult == 2) {
@@ -119,7 +144,7 @@ int main(int argc, char *argv[]) {
         } else { //Run testcase on the user program (prg.exe)
             //Make the "run user program with the current testcase" windows command
             string RunCommand = MakeRunCommand(CurrentTestCase);
-            //Declare the time 
+            //Declare the time counting variables
             time_point<high_resolution_clock> UserProgramStart;
             time_point<high_resolution_clock> UserProgramStop;
             //Declare the lambda function that runs the execution command, and measures the runtime
@@ -135,9 +160,14 @@ int main(int argc, char *argv[]) {
                 //Terminal output message
                 cout << left << setw(TerminalColumnWidth) << CurrentTestCaseCountOutputConverter(CurrentTestCase) + ":";
                 cout << ColorYellow << "  TLE  " << ColorReset;
-                cout << right << setw(TerminalColumnWidth - 1) << ">" + to_string(RuntimeTimeLimit * 1000) + "ms\n\n";
-                cout << ColorYellow << "JUDGEL (ABORT): Time Limit Exceed\n" << ColorReset;
-                //Session abortion, cannot remove file as it is still in use refer to github.com/udontur/judgel/README.md#request-limit
+                cout << right << setw(TerminalColumnWidth - 1) << ">" + to_string(RuntimeTimeLimit * 1000) + "ms\n";
+                cout<<ColorGray<<"---------ABORT--------\n\n"<<ColorReset;
+                cout << ColorYellow << "JUDGEL: Time Limit Exceed\n" << ColorReset;
+                //kill the running TLE user program
+                system("Taskkill /IM \"prg.exe\" /F > nul");
+                //Remove the temporary files
+                remove_all(TemporaryDirectoryPath);
+                //Force exit the program
                 _exit(0);
                 return 0;
             }
@@ -150,7 +180,11 @@ int main(int argc, char *argv[]) {
     }
     cout << "\n";
     //Final verdict judger
-    if (FinalVerdict == 1) {
+    if(FinalVerdict==-1){
+        cout << ColorRed;
+        cout << "There are no testcases\n";
+        cout << ColorReset;
+    }else if (FinalVerdict == 1) {
         //Terminal output message
         cout << ColorGreen;
         cout << "JUDGEL: Accepted ";
@@ -168,9 +202,9 @@ int main(int argc, char *argv[]) {
         cout << "JUDGEL: A bug has been detected, please report it via github.com/udontur/judgel/issues. Thank you.\n";
         cout << ColorReset;
     }
-    //Remove created temporary folder
+    //Remove the temporary files
     remove_all(TemporaryDirectoryPath);
-    //End the program
+    //Force exit the program
     _exit(0);
     return 0;
 }
@@ -235,7 +269,7 @@ void PrintHelpPage() {
     cout << ColorGray << "\nUsage: " << ColorReset;
     cout << ColorGreen << "judgel ";
     cout << ColorYellow << "<TIME_LIMIT(s, int)> ";
-    cout << ColorBlue << "<TESTCASE/PATH> <CPPFILE_PATH>\n\n";
+    cout << ColorBlue << "<TESTCASE/PATH> <CPP_PATH>\n\n";
     cout << ColorReset;
     //Judgel program description
     cout << ColorGreen << "Judgel" << ColorReset;
@@ -245,7 +279,7 @@ void PrintHelpPage() {
     cout << ", by ";
     cout << ColorGreen << "Hadrian (@udontur)\n" << ColorReset;
     cout << ColorGray << "Source: github.com/udontur/judgel\n";
-    cout << "MIT license - Copyright (c) 2024 Hadrian Lau (github.com/udontur)\n\n" << ColorReset;
+    cout << "MIT license - Copyright (c) 2024 Hadrian Lau (github.com/udontur)\n" << ColorReset;
 }
 //Judgel.cpp ends
 /**
@@ -253,4 +287,4 @@ void PrintHelpPage() {
  * Made with passion, by Hadrian (@udontur)
  * Source - github.com/udontur/judgel
  * MIT license - Copyright © 2024 Hadrian Lau (github.com/udontur)
- **/
+**/

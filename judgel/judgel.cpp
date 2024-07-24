@@ -32,7 +32,7 @@ char my_documents[MAX_PATH];
 HRESULT result = SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, my_documents);
 const path TemporaryDirectoryPath = result + "\\judgel-temp";
 const path TemporaryOutputPath = TemporaryDirectoryPath.u8string() + "\\out.txt";
-const path TemporaryUserProgramPath = TemporaryDirectoryPath.u8string() + "\\prg.exe";
+const path TemporaryUserProgramPath = TemporaryDirectoryPath.u8string() + "\\judgelprg.exe";
 const int TerminalColumnWidth = 8;
 //Declare functions, located at the end of judgel.cpp
 int OutputCompare(path TestCaseOutput, path UserProgramOutput);
@@ -44,7 +44,7 @@ void PrintHelpPage();
 //Driver function
 int main(int argc, char *argv[]) {
     //Invalid argument error handler
-    if (argc != 4) {
+    if (argc != 4&&argc!=2) {
         if (argc != 1) cout << ColorRed << "\nInvalid arguments\n" << ColorReset;
         PrintHelpPage();
         _exit(0);
@@ -64,25 +64,50 @@ int main(int argc, char *argv[]) {
         _exit(0);
         return 0;
     }
-    //Argument input error, testcase directory
-    path TestCaseDirectoryPath = argv[2];
-    if(!exists(TestCaseDirectoryPath)){
-        cout<<ColorRed;
-        cout<<"\nTest Case path does not exist\n";
-        cout<<ColorReset;
-        PrintHelpPage();
-        _exit(0);
-        return 0;
-    }
-    //Arugment input error, user program code file
-    path UserProgramCppPath = argv[3];
-    if(!exists(UserProgramCppPath)){
-        cout<<ColorRed;
-        cout<<"\nCode file path does not exist\n";
-        cout<<ColorReset;
-        PrintHelpPage();
-        _exit(0);
-        return 0;
+    path TestCaseDirectoryPath, UserProgramCppPath;
+    //Split input mode
+    if(argc==4){ //Non current directory mode
+        //Argument input error, testcase directory
+        TestCaseDirectoryPath = argv[2];
+        if(!exists(TestCaseDirectoryPath)){
+            cout<<ColorRed;
+            cout<<"\nPath mode: Test Case path does not exist\n";
+            cout<<ColorReset;
+            PrintHelpPage();
+            _exit(0);
+            return 0;
+        }
+        //Arugment input error, user program code file
+        UserProgramCppPath = argv[3];
+        if(!exists(UserProgramCppPath)){
+            cout<<ColorRed;
+            cout<<"\nPath mode: Code file path does not exist\n";
+            cout<<ColorReset;
+            PrintHelpPage();
+            _exit(0);
+            return 0;
+        }
+    }else{ //Current directory mode
+        //Fixed path error handler
+        TestCaseDirectoryPath="testcase";
+        if(!exists(TestCaseDirectoryPath)){
+            cout<<ColorRed;
+            cout<<"\nCurrent Directory mode: Testcase folder is not named as \"testcase\"\n";
+            cout<<ColorReset;
+            PrintHelpPage();
+            _exit(0);
+            return 0;
+        }
+        //Fixed path error handler
+        UserProgramCppPath="main.cpp";
+        if(!exists(UserProgramCppPath)){
+            cout<<ColorRed;
+            cout<<"\nCurrent Directory mode: Code file is not named as \"main.cpp\"\n";
+            cout<<ColorReset;
+            PrintHelpPage();
+            _exit(0);
+            return 0;
+        }
     }
     //Compile user's C++ code
     string CompileCommand = MakeCompileCommand(UserProgramCppPath);
@@ -101,7 +126,7 @@ int main(int argc, char *argv[]) {
         return 0;
     }
     system("CLS");
-    //User's C++ code is compiled to standard prg.exe file path
+    //User's C++ code is compiled to standard judgelprg.exe file path
     cout << ColorGray << "\nTest    Verdict   Time\n" << ColorReset;
     int TestCaseCount = 0, MaximumRuntime = 0, FinalVerdict = -1, CurrentTestCaseRuntime;
     //Iterate through the given testcase folder
@@ -141,7 +166,7 @@ int main(int argc, char *argv[]) {
             //Delete the temporary user output file, and create a new one
             remove(TemporaryOutputPath);
             MakeNewFile(TemporaryOutputPath);
-        } else { //Run testcase on the user program (prg.exe)
+        } else { //Run testcase on the user program (judgelprg.exe)
             //Make the "run user program with the current testcase" windows command
             string RunCommand = MakeRunCommand(CurrentTestCase);
             //Declare the time counting variables
@@ -164,7 +189,7 @@ int main(int argc, char *argv[]) {
                 cout<<ColorGray<<"---------ABORT--------\n\n"<<ColorReset;
                 cout << ColorYellow << "JUDGEL: Time Limit Exceed\n" << ColorReset;
                 //kill the running TLE user program
-                system("Taskkill /IM \"prg.exe\" /F > nul");
+                system("Taskkill /IM \"judgelprg.exe\" /F > nul");
                 //Remove the temporary files
                 remove_all(TemporaryDirectoryPath);
                 //Force exit the program

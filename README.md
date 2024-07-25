@@ -32,30 +32,28 @@ You only need 3 simple step to start using Judgel!
     - You can check the [sourc code here](https://github.com/udontur/judgel/src)
 3. **Click ```Next``` or ```Install```** until you see the ```Finish``` button
     - Extra: You can check the installation by typing ```judgel``` in a new terminal
-## Usage
+## Usage (Method 1, recommended)
 ```judgel``` works in **a terminal** (CMD or PowerShell) 
 Type ```judgel``` for about and help page. 
-### Current directory mode (recommended)
-This method requries significantly less typing
-#### Prerequisites 
+### Prerequisites 
 1. Your testcase folder **must** be named ```testcase```
 2. Your code file **must** be named ```main.cpp```
 3. You **must** be on the **folder** that contain the above items
     -  Command: ```cd <YOUR_FOLDER_PATH>```
 
-This is a must for the current direectory mode to work properly
-#### Syntax
+### Syntax
 ```judgel <TIME_LIMIT(s, int)>```
 
-Example (Time limit must be an **integer** in **seconds**)
--  Time limit: 2 seconds
+### Example
+- Time limit: 2 seconds (must be an **integer** in **seconds**)
 - Testcase path: ```C:\Users\udontur\code\WT00A\testcase```
 - Code path: ```C:\Users\udontur\code\WT00A\main.cpp```
 - The current directory is ```C:\Users\udontur\code\WT00A```
 
-Command: ```judgel 3```. 
-It would look like this: ```C:\Users\udontur\code\WT00A> judgel 3```
-### Path mode (not recommended)
+Command: ```judgel 3```
+
+The terminal's looks: ```C:\Users\udontur\code\WT00A> judgel 3```
+## Usage (Method 2)
 This method requires more typing, but there are **no prerequisties**
 #### Syntax
 ```judgel <TIME_LIMIT(s, int)> <TESTCASE/PATH> <CODE/PATH>```

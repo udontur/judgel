@@ -28,8 +28,8 @@ Do you have competitive programming problems but can't host them online or want 
 2. GCC C++ compiler ([No yapping installation guide](https://hadrianlau.com/blog/no-yap-mingw-w64-guide))
 ## Installation 
 1. [Click to download](https://raw.githubusercontent.com/udontur/judgel/main/app/installer/judgel.msi)
-2. Open the installer and press ```Run anyway```
-3. Click ```Next``` or ```Install``` until you see the ```Finish``` button
+2. Open the installer, click ```More info``` and ```Run anyway```
+3. Click ```Yes``` or ```Next``` or ```Install``` until you see the ```Finish``` button
 
 ## Usage (method 1)
 File and folder names with a space may break Judgel

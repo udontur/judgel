@@ -52,3 +52,9 @@ int main() {
 	for (int i = m; i <= n; i++) ans = max(ans, dp[i][m] + pre[n] - pre[i]);
 	cout << ans << endl;
 }
+/*
+#include <iostream>
+using namespace std;
+int main(){
+	while(1) cout<<"hi\n";
+}*/

@@ -25,7 +25,7 @@ You only need 3 simple step to start using Judgel!
 1. Windows 11
 2. GCC C++ compiler ([No yapping installation guide](https://hadrianlau.com/blog/no-yap-mingw-w64-guide))
 ## Installation 
-1. [Click to download](https://raw.githubusercontent.com/udontur/judgel/main/app/judgel.msi)
+1. [Click to download](https://raw.githubusercontent.com/udontur/judgel/main/app/installer/judgel.msi)
 2. Open the installer and press ```Run anyway```
 3. Click ```Next``` or ```Install``` until you see the ```Finish``` button
 

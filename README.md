@@ -81,4 +81,4 @@ Reporting the bug improves this program. [udontur](https://github.com/udontur) m
 
 ## License
 
-Distributed under the [MIT License](https://github.com/udontur/ossd-mark-calculator/blob/main/LICENSE). See [LICENSE](https://github.com/udontur/ossd-mark-calculator/blob/main/LICENSE) for more information.
+Distributed under the [MIT License](https://github.com/udontur/judgel/blob/main/LICENSE). 

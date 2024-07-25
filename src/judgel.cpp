@@ -56,13 +56,14 @@ int main(int argc, char* argv[]) {
         return 0;
     }
 
+    //The rte to tle problem checker
     if (exists(TemporaryDirectoryPath)) {
         try {
             remove_all(TemporaryDirectoryPath);
         }
         catch (filesystem_error) {
             cout << ColorYellow;
-            cout << "\nJUDGEL: Please wait a while before submitting the next command\n";
+            cout << "\nJUDGEL: Please wait a while before submitting the next command\n\n";
             cout << ColorReset;
             _exit(0);
             return 0;
@@ -130,20 +131,24 @@ int main(int argc, char* argv[]) {
     }
     
     string CompileCommand = MakeCompileCommand(UserProgramCppPath);
+    
     system("CLS");
     cout << ColorGray;
     cout << "Compiling program...\n\n";
     cout << ColorReset;
+
+    //Compiles the user program to judgelprg.exe (standard dir)
+    //may output commands in user terminal
     system(CompileCommand.c_str());
+    
     cout << "\n";
     
     if (!exists(TemporaryUserProgramPath)) {
         cout << ColorYellow;
-        cout << "JUDGEL: Compilation Error\n";
+        cout << "JUDGEL: Compilation Error\n\n";
         cout << ColorReset;
-        
+
         remove_all(TemporaryDirectoryPath);
-        
         _exit(0);
         return 0;
     }
@@ -156,10 +161,10 @@ int main(int argc, char* argv[]) {
     
     for (path CurrentTestCase : directory_iterator(TestCaseDirectoryPath)) {
         
-        if (TestCaseCount % 2) { 
+        if (TestCaseCount % 2) { //.out file
             
             MaximumRuntime = max(MaximumRuntime, CurrentTestCaseRuntime);
-            
+            //Judger
             int CurrentVerdictResult = OutputCompare(CurrentTestCase, TemporaryOutputPath);
             FinalVerdict = max(FinalVerdict, CurrentVerdictResult);
             
@@ -175,14 +180,14 @@ int main(int argc, char* argv[]) {
                 cout << "---------ABORT--------\n\n";
                 cout << ColorReset;
                 cout << ColorYellow ;
-                cout << "JUDGEL: Runtime Error\n";
+                cout << "JUDGEL: Runtime Error\n\n";
                 cout << ColorReset;
                 
                 remove_all(TemporaryDirectoryPath);
                 
                 _exit(0);
                 return 0;
-            } else if (CurrentVerdictResult == 2) {
+            } else if (CurrentVerdictResult == 2) { //.in file
                 
                 cout << left << setw(TerminalColumnWidth);
                 cout << CurrentTestCaseCountOutputConverter(CurrentTestCase) + ":";
@@ -210,17 +215,18 @@ int main(int argc, char* argv[]) {
             
             time_point<high_resolution_clock> UserProgramStart;
             time_point<high_resolution_clock> UserProgramStop;
-            
+            //Lambda function to run the async process
             auto RunSystem = [&UserProgramStart, &RunCommand, &UserProgramStop]() {
                 UserProgramStart = high_resolution_clock::now();
                 system(RunCommand.c_str());
                 UserProgramStop = high_resolution_clock::now();
             };
-            
+            //Run the judgelprg.exe with .in testcase asyncly
             auto UserProgramFuture = async(launch::async, RunSystem);
-            
+            //Listens for time out
             if (UserProgramFuture.wait_for(seconds(RuntimeTimeLimit)) == future_status::timeout) {
                 bool rte = 0;
+                //If the program wants to rte, but the time limit stops, you can't terminate the process
                 try {
                     system("Taskkill /IM \"judgelprg.exe\" /F > nul 2>&1");
                     remove_all(TemporaryDirectoryPath);
@@ -241,7 +247,7 @@ int main(int argc, char* argv[]) {
                     cout << "JUDGEL: Runtime Error\n\n";
                     cout << ColorReset;
                     cout << ColorYellow;
-                    cout << "JUDGEL: Please wait a while before submitting the next command\n";
+                    cout << "JUDGEL: Please wait a while before submitting the next command\n\n";
                     cout << ColorReset;
                 } else {
                     cout << left << setw(TerminalColumnWidth);
@@ -255,13 +261,14 @@ int main(int argc, char* argv[]) {
                     cout << "---------ABORT--------\n\n";
                     cout << ColorReset;
                     cout << ColorYellow;
-                    cout << "JUDGEL: Time Limit Exceed\n";
+                    cout << "JUDGEL: Time Limit Exceed\n\n";
                     cout << ColorReset;
                 }
+
                 _exit(0);
                 return 0;
             }
-            
+            //Feed duration to the next cycle
             const auto UserProgramThreadRuntime = UserProgramStop - UserProgramStart;
             CurrentTestCaseRuntime = duration_cast<milliseconds>(UserProgramThreadRuntime).count();
         }
@@ -272,24 +279,24 @@ int main(int argc, char* argv[]) {
     
     if (FinalVerdict == -1) {
         cout << ColorRed;
-        cout << "There are no testcases\n";
+        cout << "There are no testcases\n\n";
         cout << ColorReset;
     } else if (FinalVerdict == 1) {
         
         cout << ColorGreen;
         cout << "JUDGEL: Accepted ";
-        cout << MaximumRuntime << "ms\n";
+        cout << MaximumRuntime << "ms\n\n";
         cout << ColorReset;
     } else if (FinalVerdict == 2) {
         
         cout << ColorRed;
         cout << "JUDGEL: Wrong Answer ";
-        cout << MaximumRuntime << "ms\n";
+        cout << MaximumRuntime << "ms\n\n";
         cout << ColorReset;
     } else {
         
         cout << ColorRed;
-        cout << "JUDGEL: A bug has been detected, please report it via github.com/udontur/judgel/issues. Thank you.\n";
+        cout << "JUDGEL: A bug has been detected, please report it via github.com/udontur/judgel/issues. Thank you.\n\n";
         cout << ColorReset;
     }
     
@@ -305,8 +312,7 @@ int OutputCompare(path TestCaseOutput, path UserProgramOutput) {
     
     ifstream TestCaseFout(TestCaseOutput);
     ifstream UserProgramFout(UserProgramOutput);
-    
-    
+    //Judge both files for accuracy
     while (!TestCaseFout.eof()) {
         string CurrentStringTestCase, CurrentStringUserProgram;
         TestCaseFout >> CurrentStringTestCase;
@@ -360,12 +366,9 @@ void PrintHelpPage() {
     cout << "\nUsage: ";
     cout << ColorReset;
     cout << ColorGreen;
-    cout << "judgel ";a
+    cout << "judgel ";
     cout << ColorYellow;
-    cout << "<TIME_LIMIT(s, int)> ";
-    cout << ColorBlue;
-    cout << "<TESTCASE/PATH> <CODE/PATH>\n";
-    cout << ColorReset;
+    cout << "<TIME_LIMIT(s, int)> \n";
     cout << ColorGray;
     cout << "More on github.com/udontur/judgel#usage\n\n";
     cout << ColorReset;
@@ -384,7 +387,7 @@ void PrintHelpPage() {
     cout << ColorReset;
     cout << ColorGray;
     cout << "Source: github.com/udontur/judgel\n";
-    cout << "MIT license - Copyright (c) 2024 Hadrian Lau (github.com/udontur)\n";
+    cout << "MIT license - Copyright (c) 2024 Hadrian Lau (github.com/udontur)\n\n";
     cout  << ColorReset;
 }
 

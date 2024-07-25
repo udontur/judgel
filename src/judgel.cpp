@@ -4,6 +4,7 @@
  * Source - github.com/udontur/judgel
  * MIT license - Copyright © 2024 Hadrian Lau (github.com/udontur)
 **/
+
 #include <Lmcons.h>
 #include <shlobj.h>
 #include <windows.h>
@@ -27,10 +28,10 @@ using namespace std::filesystem;
 #define ColorBlue "\033[34m"
 #define ColorGray "\033[90m"
 
-
 char my_documents[MAX_PATH];
-HRESULT result = SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, my_documents);
-const path TemporaryDirectoryPath = result + "\\judgel-temp";
+HRESULT DocumentFolderPath = SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, SHGFP_TYPE_CURRENT, my_documents);
+
+const path TemporaryDirectoryPath = DocumentFolderPath + "\\judgel-temp";
 const path TemporaryOutputPath = TemporaryDirectoryPath.u8string() + "\\out.txt";
 const path TemporaryUserProgramPath = TemporaryDirectoryPath.u8string() + "\\judgelprg.exe";
 const int TerminalColumnWidth = 8;
@@ -44,7 +45,6 @@ void PrintHelpPage();
 
 int main(int argc, char* argv[]) {
 
-    
     if (argc != 4 && argc != 2) {
         if (argc != 1){
             cout << ColorRed;
@@ -69,10 +69,8 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    
     create_directory(TemporaryDirectoryPath);
 
-    
     int RuntimeTimeLimit;
     try {
         RuntimeTimeLimit = stoi(argv[1]);
@@ -144,7 +142,6 @@ int main(int argc, char* argv[]) {
         cout << "JUDGEL: Compilation Error\n";
         cout << ColorReset;
         
-        
         remove_all(TemporaryDirectoryPath);
         
         _exit(0);
@@ -180,7 +177,6 @@ int main(int argc, char* argv[]) {
                 cout << ColorYellow ;
                 cout << "JUDGEL: Runtime Error\n";
                 cout << ColorReset;
-                
                 
                 remove_all(TemporaryDirectoryPath);
                 
@@ -232,18 +228,35 @@ int main(int argc, char* argv[]) {
                     rte = 1;
                 }
                 if (rte) {
-                    cout << left << setw(TerminalColumnWidth) << CurrentTestCaseCountOutputConverter(CurrentTestCase) + ":";
-                    cout << ColorYellow << "  RTE  " << ColorReset;
+                    cout << left << setw(TerminalColumnWidth);
+                    cout << CurrentTestCaseCountOutputConverter(CurrentTestCase) + ":";
+                    cout << ColorYellow;
+                    cout << "  RTE  ";
+                    cout << ColorReset;
                     cout << "   --ms\n";
-                    cout << ColorGray << "---------ABORT--------\n\n" << ColorReset;
-                    cout << ColorYellow << "JUDGEL: Runtime Error\n\n" << ColorReset;
-                    cout << ColorYellow << "JUDGEL: Please wait a while before submitting the next command\n" << ColorReset;
+                    cout << ColorGray;
+                    cout << "---------ABORT--------\n\n";
+                    cout << ColorReset;
+                    cout << ColorYellow;
+                    cout << "JUDGEL: Runtime Error\n\n";
+                    cout << ColorReset;
+                    cout << ColorYellow;
+                    cout << "JUDGEL: Please wait a while before submitting the next command\n";
+                    cout << ColorReset;
                 } else {
-                    cout << left << setw(TerminalColumnWidth) << CurrentTestCaseCountOutputConverter(CurrentTestCase) + ":";
-                    cout << ColorYellow << "  TLE  " << ColorReset;
-                    cout << right << setw(TerminalColumnWidth - 1) << ">" + to_string(RuntimeTimeLimit * 1000) + "ms\n";
-                    cout << ColorGray << "---------ABORT--------\n\n" << ColorReset;
-                    cout << ColorYellow << "JUDGEL: Time Limit Exceed\n" << ColorReset;
+                    cout << left << setw(TerminalColumnWidth);
+                    cout << CurrentTestCaseCountOutputConverter(CurrentTestCase) + ":";
+                    cout << ColorYellow;
+                    cout << "  TLE  ";
+                    cout << ColorReset;
+                    cout << right << setw(TerminalColumnWidth - 1);
+                    cout << ">" + to_string(RuntimeTimeLimit * 1000) + "ms\n";
+                    cout << ColorGray;
+                    cout << "---------ABORT--------\n\n";
+                    cout << ColorReset;
+                    cout << ColorYellow;
+                    cout << "JUDGEL: Time Limit Exceed\n";
+                    cout << ColorReset;
                 }
                 _exit(0);
                 return 0;
@@ -343,21 +356,36 @@ string CurrentTestCaseCountOutputConverter(path TestCasePath) {
 
 void PrintHelpPage() {
     
-    cout << ColorGray << "\nUsage: " << ColorReset;
-    cout << ColorGreen << "judgel ";
-    cout << ColorYellow << "<TIME_LIMIT(s, int)> ";
-    cout << ColorBlue << "<TESTCASE/PATH> <CODE/PATH>\n" << ColorReset;
+    cout << ColorGray;
+    cout << "\nUsage: ";
     cout << ColorReset;
-    cout << ColorGray << "More on github.com/udontur/judgel#usage\n\n" << ColorReset;
+    cout << ColorGreen;
+    cout << "judgel ";
+    cout << ColorYellow;
+    cout << "<TIME_LIMIT(s, int)> ";
+    cout << ColorBlue;
+    cout << "<TESTCASE/PATH> <CODE/PATH>\n";
+    cout << ColorReset;
+    cout << ColorGray;
+    cout << "More on github.com/udontur/judgel#usage\n\n";
+    cout << ColorReset;
     
-    cout << ColorGreen << "Judgel" << ColorReset;
+    cout << ColorGreen;
+    cout << "Judgel";
+    cout << ColorReset;
     cout << " - Simple local C++ judge\n";
     cout << "Made with ";
-    cout << ColorGreen << "passion" << ColorReset;
+    cout << ColorGreen;
+    cout << "passion";
+    cout << ColorReset;
     cout << ", by ";
-    cout << ColorGreen << "Hadrian (@udontur)\n" << ColorReset;
-    cout << ColorGray << "Source: github.com/udontur/judgel\n";
-    cout << "MIT license - Copyright (c) 2024 Hadrian Lau (github.com/udontur)\n" << ColorReset;
+    cout << ColorGreen;
+    cout << "Hadrian (@udontur)\n";
+    cout << ColorReset;
+    cout << ColorGray;
+    cout << "Source: github.com/udontur/judgel\n";
+    cout << "MIT license - Copyright (c) 2024 Hadrian Lau (github.com/udontur)\n";
+    cout  << ColorReset;
 }
 
 /**

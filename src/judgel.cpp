@@ -360,7 +360,7 @@ void PrintHelpPage() {
     cout << "\nUsage: ";
     cout << ColorReset;
     cout << ColorGreen;
-    cout << "judgel ";
+    cout << "judgel ";a
     cout << ColorYellow;
     cout << "<TIME_LIMIT(s, int)> ";
     cout << ColorBlue;

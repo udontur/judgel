@@ -13,13 +13,15 @@
 
 ## About
 
-Got some competitive programming problems, but you can't host them online (or you wanna do them offline)? Judgel got you covered!
+Do you have competitive programming problems but can't host them online or want to work on them offline? Judgel has you covered!
 
-Judgel is a simple and easy to use C++ judge that can be run locally and offline. It has all the verdicts and functions a typical online judge would have.
+🧑‍⚖️ Judgel is a simple and easy-to-use C++ judge that can be run locally and offline. 
 
-You only need 3 simple step to start using Judgel! 
+⚙️ It has a variety of verdicts, an accurate judging process, and a simple UI!
 
-🌟 If you find this helpful, consider [staring this repo](https://docs.github.com/en/get-started/exploring-projects-on-github/saving-repositories-with-stars)! It supports me as a student!
+🪛 You only need 3 simple step to get started!
+
+🌟 If you find this helpful, please consider [starring this repository](https://docs.github.com/en/get-started/exploring-projects-on-github/saving-repositories-with-stars)! It will support me as a student.
 
 ## Prerequisites
 1. Windows 11
@@ -29,8 +31,7 @@ You only need 3 simple step to start using Judgel!
 2. Open the installer and press ```Run anyway```
 3. Click ```Next``` or ```Install``` until you see the ```Finish``` button
 
-## Usage
-[Usage method 2](https://github.com/udontur/judgel/blob/main/asset/usage-method-2.md) (not recommended)
+## Usage (method 1)
 ### Prerequisites 
 1. Testcase folder name: ```testcase```
 2. Code file name: ```main.cpp```
@@ -41,16 +42,18 @@ You only need 3 simple step to start using Judgel!
 ```judgel <TIME_LIMIT(s, int)>```
 
 ### Example
-Setting
+Settings
 - Time limit: 2 seconds (must be an **integer** in **seconds**)
 - Testcase path: ```C:\Users\udontur\code\WT00A\testcase```
 - Code file path: ```C:\Users\udontur\code\WT00A\main.cpp```
 
 Commands
-1. ```cd C:\Users\udontur\code\WT00A```
-2. ```judgel 2```
+1. Change directory: ```cd C:\Users\udontur\code\WT00A```
+    - You don't need to do this everytime
+2. Judge program:  ```judgel 2```
+    - Repeat this command for future use
 
-Repeat command #2 for future use
+[Usage method 2](https://github.com/udontur/judgel/blob/main/asset/usage-method-2.md) (not recommended)
 
 ## License
 

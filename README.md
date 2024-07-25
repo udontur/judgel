@@ -22,60 +22,35 @@ You only need 3 simple step to start using Judgel!
 🌟 If you find this helpful, consider [staring this repo](https://docs.github.com/en/get-started/exploring-projects-on-github/saving-repositories-with-stars)! It supports me as a student!
 
 ## Prerequisites
-1. **Windows 11** (Windows 10 is not recommended)
-2. **GCC C++ compiler** (g++, MinGW-w64)
-    - Check it out: [No yapping installation guide](https://hadrianlau.com/blog/no-yap-mingw-w64-guide)
+1. Windows 11
+2. GCC C++ compiler ([No yapping installation guide](https://hadrianlau.com/blog/no-yap-mingw-w64-guide))
 ## Installation 
-1. **[Click here](https://raw.githubusercontent.com/udontur/judgel/main/app/judgel.msi)** to download
-2. **Open the installer** and press ```Run anyway```
-    - Judgel is not a virus (I know this is what a virus would say)
-    - You can check the [sourc code here](https://github.com/udontur/judgel/src)
-3. **Click ```Next``` or ```Install```** until you see the ```Finish``` button
-    - Extra: You can check the installation by typing ```judgel``` in a new terminal
-## Usage (Method 1, recommended)
-```judgel``` works in **a terminal** (CMD or PowerShell) 
-Type ```judgel``` for about and help page. 
+1. [Click to download](https://raw.githubusercontent.com/udontur/judgel/main/app/judgel.msi)
+2. Open the installer and press ```Run anyway```
+3. Click ```Next``` or ```Install``` until you see the ```Finish``` button
+
+## Usage
+[Usage method 2](https://github.com/udontur/judgel/blob/main/asset/usage-method-2.md) (not recommended)
 ### Prerequisites 
-1. Your testcase folder **must** be named ```testcase```
-2. Your code file **must** be named ```main.cpp```
-3. You **must** be on the **folder** that contain the above items
+1. Testcase folder name: ```testcase```
+2. Code file name: ```main.cpp```
+3. Current directory contains the above item
     -  Command: ```cd <YOUR_FOLDER_PATH>```
 
 ### Syntax
 ```judgel <TIME_LIMIT(s, int)>```
 
 ### Example
+Setting
 - Time limit: 2 seconds (must be an **integer** in **seconds**)
 - Testcase path: ```C:\Users\udontur\code\WT00A\testcase```
-- Code path: ```C:\Users\udontur\code\WT00A\main.cpp```
-- The current directory is ```C:\Users\udontur\code\WT00A```
+- Code file path: ```C:\Users\udontur\code\WT00A\main.cpp```
 
-Command: ```judgel 3```
+Commands
+1. ```cd C:\Users\udontur\code\WT00A```
+2. ```judgel 2```
 
-The terminal's looks: ```C:\Users\udontur\code\WT00A> judgel 3```
-## Usage (Method 2)
-This method requires more typing, but there are **no prerequisties**
-#### Syntax
-```judgel <TIME_LIMIT(s, int)> <TESTCASE/PATH> <CODE/PATH>```
-
-Example (Time limit must be an **integer** in **seconds**)
-- Time limit: 2 seconds
-- Testcase path: ```C:\Users\udontur\Documents\WT00A\testcase```
-- Code path: ```C:\Users\udontur\code\i luv cs\a.cpp```
-
-Command: ```judgel 2 "C:\Users\udontur\Documents\WT00A\testcase" "C:\Users\udontur\code\i luv cs\a.cpp"``` 
-
-Note 1: Relative paths is also accepted
-Note 2: Paths that contain spaces must be wrapped with ```"``` 
-
-### Report a bug
-Please [report the bug](https://github.com/udontur/judgel/issues/new) if you found a bug in the program.
-
-Please list:
-1. How to produce the bug
-2. A screenshot of the bug
-
-Reporting the bug improves this program. [udontur](https://github.com/udontur) more than happy to discover an unknown bug through you help! 
+Repeat command #2 for future use
 
 ## License
 

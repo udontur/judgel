@@ -25,7 +25,7 @@ Do you have competitive programming problems but can't host them online or want 
 
 ## Prerequisites
 1. Windows 11
-2. GCC C++ compiler ([No yapping installation guide](https://hadrianlau.com/blog/no-yap-mingw-w64-guide))
+2. GCC C++ compiler ([No yapping installation guide](https://hadrianlau.com/blog/no-yap-cpp-compiler-guide))
 ## Installation 
 1. [Click to download](https://raw.githubusercontent.com/udontur/judgel/main/app/installer/judgel.msi)
 2. Open the installer, click ```More info``` and ```Run anyway```

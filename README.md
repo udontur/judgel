@@ -32,7 +32,7 @@ Do you have competitive programming problems but can't host them online or want 
 3. Click ```Yes``` or ```Next``` or ```Install``` until you see the ```Finish``` button
 
 ## Usage (method 1)
-File and folder names with a space may break Judgel
+File and folder names with a space character ``` ``` may break Judgel
 ### Prerequisites 
 1. Testcase folder name: ```testcase```
 2. Code file name: ```main.cpp```

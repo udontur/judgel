@@ -55,7 +55,3 @@ Commands
     - Repeat this command for future use
 
 [Usage method 2](https://github.com/udontur/judgel/blob/main/asset/usage-method-2.md) (not recommended)
-
-## License
-
-Distributed under the [MIT License](https://github.com/udontur/judgel/blob/main/LICENSE). 

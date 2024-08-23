@@ -2,7 +2,7 @@
 <div align="center">
   <h1 align="center">Judgel</h3>
   <p align="center">
-    🧑‍⚖️ Simple local C++ judge
+    ⚖️ Simple local C++ judge
     <br />
     <br />
     <a href="https://github.com/udontur/judgel/issues/new">Report Bug</a>
@@ -15,7 +15,7 @@
 
 Do you have competitive programming problems but can't host them online or want to work on them offline? Judgel has you covered!
 
-🧑‍⚖️ Judgel is a simple and easy-to-use C++ judge that can be run locally and offline. 
+⚖️ Judgel is a simple and easy-to-use C++ judge that can be run locally and offline. 
 
 ⚙️ It has a variety of verdicts, an accurate judging process, and a simple UI!
 

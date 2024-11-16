@@ -5,9 +5,8 @@
  * MIT license - Copyright © 2024 Hadrian Lau (github.com/udontur)
 **/
 
-#include <Lmcons.h>
-#include <shlobj.h>
-#include <windows.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include <chrono>
 #include <filesystem>
 #include <fstream>

@@ -1,0 +1,2 @@
+g++ ~/udontur/github/judgel/src/judgel.cpp -o ~/udontur/github/judgel/run.out
+~/udontur/github/judgel/run.out 1

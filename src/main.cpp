@@ -10,38 +10,41 @@
 #include <thread>
 #include <vector>
 #include <algorithm>
-#include "header/judgel.h"
-#include "header/color.h"
+#include "lib/judgel.h"
+#include "lib/color.h"
 
 using namespace std;
 using namespace std::chrono;
 using namespace std::filesystem; 
 
 int main(int argc, char* argv[]){
+    
     if(argc!=2){
         cout<<"Error: Invalid argument\n";
+        ClearCache();
         PrintHelpPage();
         return 0;
     }
     string times=argv[1];
     for(int i =0; i<times.size(); i++){
         if(argv[1][i]<='0'||argv[1][i]>='9'){
-            cout<<"Error: Time limit is not an integer\n";
+            cout<<"ERROR: Time limit is not an integer\n";
+            ClearCache();
             PrintHelpPage();
             return 0;
         }
     }
     int RunTimeLimit=stoi(argv[1]);
-    if(!exists("~/.cache/judgel"))
-        system("mkdir ~/.cache/judgel");
-
+    ClearCache();
     if(!exists("testcase")){
-        cout<<"Error: \"testcase\" not found\n";
+        cout<<"ERROR: \"testcase\" not found\n";
+        ClearCache();
         PrintHelpPage();
         return 0;
     }
     if(!exists("main.cpp")){
-        cout<<"Error: \"main.cpp\" code file not found\n";
+        cout<<"ERROR: \"main.cpp\" not found\n";
+        ClearCache();
         PrintHelpPage();
         return 0;
     }
@@ -49,7 +52,31 @@ int main(int argc, char* argv[]){
     cout << ColorGray;
     cout << "Compiling program...\n\n";
     cout << ColorReset;
-    system("g++ main.cpp -o ~/.cache/judgel/usr.out");
+
+    const path usrpg="$HOME/.cache/judgel/usr.out";
+
+    cout<<"*Compile: [";
+    string runcmd="g++ main.cpp -o "+static_cast<string>(usrpg);
+    system(runcmd.c_str());
+    cout<<"]\n";
+
+    cout<<"*ls: [";
+    string checker="ls $HOME/.cache/judgel";
+    system(checker.c_str());
+    cout<<"]\n";
+
+    cout<<"*Does usr.out exist: ";
+    cout<<exists(usrpg)<<"\n";
+
+    return 0;
+
+    if(!exists(usrpg)){
+        //cout<<"CHECK\n";
+        //WHY IT DOES NOT WORK
+        cout<<"Compilation Error\n";
+        ClearCache();
+        return 0;
+    }
     cout << ColorRed;
     cout << "\nTest    Verdict   Time\n";
     cout << ColorReset;
@@ -69,13 +96,13 @@ int main(int argc, char* argv[]){
                 cout<<"WA\n";
             }
         }else{
-            if(!exists("rm ~/.cache/judgel/out.txt"))system("rm ~/.cache/judgel/out.txt");
-            //system("touch ~/.cache/judgel/out.txt");
+            if(!exists("rm $HOME/.cache/judgel/out.txt"))system("rm $HOME/.cache/judgel/out.txt");
+            //system("touch $HOME/.cache/judgel/out.txt");
             time_point<high_resolution_clock> UserProgramStart;
             time_point<high_resolution_clock> UserProgramStop;
-            string RunCommand="~/.cache/judgel/usr.out < ";
+            string RunCommand="$HOME/.cache/judgel/usr.out < ";
             RunCommand+=CurrentTestCase.u8string();
-            RunCommand+=" > ~/.cache/judgel/out.txt";
+            RunCommand+=" > $HOME/.cache/judgel/out.txt";
             cout<<CurrentTestCase.u8string()<<":P:\n";
             //Lambda function to run the async process
             auto RunSystem = [&UserProgramStart, &CurrentTestCase, &RunCommand, &UserProgramStop]() {
@@ -87,10 +114,11 @@ int main(int argc, char* argv[]){
             auto UserProgramFuture = async(launch::async, RunSystem);
             if(UserProgramFuture.wait_for(seconds(RunTimeLimit)) == future_status::timeout){
                 cout<<"TLE\n";
-                system("pkill -9 -f ~/.cache/judgel/usr.out");
+                system("pkill -9 -f $HOME/.cache/judgel/usr.out");
             }
         }
         incr++;
     }
+    ClearCache();
     return 0;
 }

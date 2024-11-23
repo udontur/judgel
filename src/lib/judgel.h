@@ -13,6 +13,11 @@ using namespace std;
 using namespace std::chrono;
 using namespace std::filesystem; 
 
+void ClearCache(){
+    system("rm -rf ~/.cache/judgel");
+    system("mkdir ~/.cache/judgel");
+}
+
 void PrintHelpPage() {
     
     cout << ColorGray;
@@ -48,6 +53,8 @@ bool isac(path CurrentTestCase){
     ifstream tin (CurrentTestCase);
     ifstream uin ("~/.cache/judgel/out.txt");
     string t, u;
+    system("cat ~/.cache/judgel/out.txt");
+    cout<<"\n";
     while(uin>>u){
         tin>>t;
         cout<<t<<" | "<<u<<"\n";

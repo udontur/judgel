@@ -52,7 +52,17 @@ int main(int argc, char* argv[]){
     cout << ColorGray;
     cout << "Compiling program...\n\n";
     cout << ColorReset;
-
+    /*IT DOES NOT SPWN DA USR>OUT*/
+    /*IT DOES NOT SPWN DA USR>OUT*/
+    /*IT DOES NOT SPWN DA USR>OUT*/
+    /*IT DOES NOT SPWN DA USR>OUT*/
+    /*IT DOES NOT SPWN DA USR>OUT*/
+    /*IT DOES NOT SPWN DA USR>OUT*/
+    /*IT DOES NOT SPWN DA USR>OUT*/
+    /*IT DOES NOT SPWN DA USR>OUT*/
+    /*IT DOES NOT SPWN DA USR>OUT*/
+    /*IT DOES NOT SPWN DA USR>OUT*/
+    /*IT DOES NOT SPWN DA USR>OUT*/
     const path usrpg="$HOME/.cache/judgel/usr.out";
 
     cout<<"*Compile: [";
@@ -77,6 +87,25 @@ int main(int argc, char* argv[]){
         ClearCache();
         return 0;
     }
+    /*IT DOES NOT SPWN DA USR>OUT*/
+    /*IT DOES NOT SPWN DA USR>OUT*/
+    /*IT DOES NOT SPWN DA USR>OUT*/
+    /*IT DOES NOT SPWN DA USR>OUT*/
+    /*IT DOES NOT SPWN DA USR>OUT*/
+    /*IT DOES NOT SPWN DA USR>OUT*/
+    /*IT DOES NOT SPWN DA USR>OUT*/
+    /*IT DOES NOT SPWN DA USR>OUT*/
+    /*IT DOES NOT SPWN DA USR>OUT*/
+    /*IT DOES NOT SPWN DA USR>OUT*/
+    /*IT DOES NOT SPWN DA USR>OUT*/
+    /*IT DOES NOT SPWN DA USR>OUT*/
+    /*IT DOES NOT SPWN DA USR>OUT*/
+    /*IT DOES NOT SPWN DA USR>OUT*/
+    /*IT DOES NOT SPWN DA USR>OUT*/
+    /*IT DOES NOT SPWN DA USR>OUT*/
+    /*IT DOES NOT SPWN DA USR>OUT*/
+    /*IT DOES NOT SPWN DA USR>OUT*/
+    
     cout << ColorRed;
     cout << "\nTest    Verdict   Time\n";
     cout << ColorReset;

@@ -15,7 +15,7 @@ using namespace std::filesystem;
 
 void ClearCache(){
     system("rm -rf ~/.cache/judgel");
-    system("mkdir ~/.cache/judgel");
+    system("mkdir -p ~/.cache/judgel");
 }
 
 void PrintHelpPage() {

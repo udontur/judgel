@@ -10,13 +10,17 @@
 #include <thread>
 #include <vector>
 #include <algorithm>
+#include <sys/stat.h>
 #include "lib/judgel.h"
 #include "lib/color.h"
 
 using namespace std;
 using namespace std::chrono;
 using namespace std::filesystem; 
-
+bool fileExists(const std::string& path) {
+    struct stat buffer;
+    return (stat(path.c_str(), &buffer) == 0);
+}
 int main(int argc, char* argv[]){
     
     if(argc!=2){
@@ -52,59 +56,35 @@ int main(int argc, char* argv[]){
     cout << ColorGray;
     cout << "Compiling program...\n\n";
     cout << ColorReset;
-    /*IT DOES NOT SPWN DA USR>OUT*/
-    /*IT DOES NOT SPWN DA USR>OUT*/
-    /*IT DOES NOT SPWN DA USR>OUT*/
-    /*IT DOES NOT SPWN DA USR>OUT*/
-    /*IT DOES NOT SPWN DA USR>OUT*/
-    /*IT DOES NOT SPWN DA USR>OUT*/
-    /*IT DOES NOT SPWN DA USR>OUT*/
-    /*IT DOES NOT SPWN DA USR>OUT*/
-    /*IT DOES NOT SPWN DA USR>OUT*/
-    /*IT DOES NOT SPWN DA USR>OUT*/
-    /*IT DOES NOT SPWN DA USR>OUT*/
-    const path usrpg="$HOME/.cache/judgel/usr.out";
+    
+    string homefolder=getenv("HOME");
+
+    string usrpg=homefolder+"/.cache/judgel/usr.out";
 
     cout<<"*Compile: [";
     string runcmd="g++ main.cpp -o "+static_cast<string>(usrpg);
     system(runcmd.c_str());
     cout<<"]\n";
 
-    cout<<"*ls: [";
+    /*cout<<"*ls: [";
     string checker="ls $HOME/.cache/judgel";
     system(checker.c_str());
     cout<<"]\n";
 
     cout<<"*Does usr.out exist: ";
-    cout<<exists(usrpg)<<"\n";
+    system("ls -l ~/.cache/judgel/usr.out");
+    //cout<<exists(usrpg)<<"\n";
 
-    return 0;
+    return 0;*/
 
-    if(!exists(usrpg)){
+    system("test -f $HOME/.cache/judgel/usr.out && echo $?");
+    if(!fileExists(usrpg)){
         //cout<<"CHECK\n";
         //WHY IT DOES NOT WORK
-        cout<<"Compilation Error\n";
+        cout<<"Detected not here!\n";
         ClearCache();
         return 0;
     }
-    /*IT DOES NOT SPWN DA USR>OUT*/
-    /*IT DOES NOT SPWN DA USR>OUT*/
-    /*IT DOES NOT SPWN DA USR>OUT*/
-    /*IT DOES NOT SPWN DA USR>OUT*/
-    /*IT DOES NOT SPWN DA USR>OUT*/
-    /*IT DOES NOT SPWN DA USR>OUT*/
-    /*IT DOES NOT SPWN DA USR>OUT*/
-    /*IT DOES NOT SPWN DA USR>OUT*/
-    /*IT DOES NOT SPWN DA USR>OUT*/
-    /*IT DOES NOT SPWN DA USR>OUT*/
-    /*IT DOES NOT SPWN DA USR>OUT*/
-    /*IT DOES NOT SPWN DA USR>OUT*/
-    /*IT DOES NOT SPWN DA USR>OUT*/
-    /*IT DOES NOT SPWN DA USR>OUT*/
-    /*IT DOES NOT SPWN DA USR>OUT*/
-    /*IT DOES NOT SPWN DA USR>OUT*/
-    /*IT DOES NOT SPWN DA USR>OUT*/
-    /*IT DOES NOT SPWN DA USR>OUT*/
     
     cout << ColorRed;
     cout << "\nTest    Verdict   Time\n";

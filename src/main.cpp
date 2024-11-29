@@ -13,14 +13,12 @@
 #include <sys/stat.h>
 #include "lib/judgel.h"
 #include "lib/color.h"
+#include "lib/var.h"
 
 using namespace std;
 using namespace std::chrono;
 using namespace std::filesystem; 
-bool fileExists(const std::string& path) {
-    struct stat buffer;
-    return (stat(path.c_str(), &buffer) == 0);
-}
+
 int main(int argc, char* argv[]){
     
     if(argc!=2){
@@ -56,8 +54,6 @@ int main(int argc, char* argv[]){
     cout << ColorGray;
     cout << "Compiling program...\n\n";
     cout << ColorReset;
-    
-    string homefolder=getenv("HOME");
 
     string usrpg=homefolder+"/.cache/judgel/usr.out";
 
@@ -78,7 +74,7 @@ int main(int argc, char* argv[]){
     return 0;*/
 
     system("test -f $HOME/.cache/judgel/usr.out && echo $?");
-    if(!fileExists(usrpg)){
+    if(!exists(usrpg)){
         //cout<<"CHECK\n";
         //WHY IT DOES NOT WORK
         cout<<"Detected not here!\n";
@@ -104,15 +100,17 @@ int main(int argc, char* argv[]){
             }else{
                 cout<<"WA\n";
             }
+            
         }else{
-            if(!exists("rm $HOME/.cache/judgel/out.txt"))system("rm $HOME/.cache/judgel/out.txt");
-            //system("touch $HOME/.cache/judgel/out.txt");
+            if(exists("rm $HOME/.cache/judgel/out.txt")) system("rm $HOME/.cache/judgel/out.txt");
+            
             time_point<high_resolution_clock> UserProgramStart;
             time_point<high_resolution_clock> UserProgramStop;
-            string RunCommand="$HOME/.cache/judgel/usr.out < ";
+            string RunCommand="~/.cache/judgel/usr.out < ";
             RunCommand+=CurrentTestCase.u8string();
-            RunCommand+=" > $HOME/.cache/judgel/out.txt";
-            cout<<CurrentTestCase.u8string()<<":P:\n";
+            RunCommand+=" > ~/.cache/judgel/out.txt";
+            cout<<RunCommand<<"\n";
+            //cout<<CurrentTestCase.u8string()<<":P:\n";
             //Lambda function to run the async process
             auto RunSystem = [&UserProgramStart, &CurrentTestCase, &RunCommand, &UserProgramStop]() {
                 UserProgramStart = high_resolution_clock::now();
@@ -123,8 +121,9 @@ int main(int argc, char* argv[]){
             auto UserProgramFuture = async(launch::async, RunSystem);
             if(UserProgramFuture.wait_for(seconds(RunTimeLimit)) == future_status::timeout){
                 cout<<"TLE\n";
-                system("pkill -9 -f $HOME/.cache/judgel/usr.out");
+                system("pkill -9 -f ~/.cache/judgel/usr.out");
             }
+            system("cat ~/.cache/judgel/out.txt");
         }
         incr++;
     }

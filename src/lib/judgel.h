@@ -8,7 +8,7 @@
 #include <iostream>
 #include <thread>
 #include "color.h"
-
+#include "var.h"
 using namespace std;
 using namespace std::chrono;
 using namespace std::filesystem; 
@@ -51,19 +51,21 @@ void PrintHelpPage() {
 
 bool isac(path CurrentTestCase){
     ifstream tin (CurrentTestCase);
-    ifstream uin ("~/.cache/judgel/out.txt");
+    ifstream uin (usroutput);
     string t, u;
-    system("cat ~/.cache/judgel/out.txt");
-    cout<<"\n";
-    while(uin>>u){
+    //system("cat ~/.cache/judgel/out.txt");
+    //cout<<"\n";
+    while(!uin.eof()){
+        uin>>u;
         tin>>t;
         cout<<t<<" | "<<u<<"\n";
-        //if(t!=u) return 0;
+        if(t!=u) return 0;
     }
-    while(tin>>t){
+    while(!tin.eof()){
         uin>>u;
+        tin>>t;
         cout<<t<<" || "<<u<<"\n";
-        //if(t!=u) return 0;
+        if(t!=u) return 0;
     }
     return 1;
 }

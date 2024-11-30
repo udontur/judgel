@@ -1,17 +1,5 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <chrono>
-#include <filesystem>
-#include <fstream>
-#include <future>
-#include <iomanip>
-#include <iostream>
-#include <thread>
-#include "color.h"
 #include "var.h"
-using namespace std;
-using namespace std::chrono;
-using namespace std::filesystem; 
+#include "color.h"
 
 void ClearCache(){
     system("rm -rf ~/.cache/judgel");
@@ -49,22 +37,13 @@ void PrintHelpPage() {
     cout  << ColorReset;
 }
 
-bool isac(path CurrentTestCase){
-    ifstream tin (CurrentTestCase);
-    ifstream uin (usroutput);
+bool isac(path ctcout){
+    ifstream tin (ctcout);
+    ifstream uin (usrout);
     string t, u;
-    //system("cat ~/.cache/judgel/out.txt");
-    //cout<<"\n";
-    while(!uin.eof()){
-        uin>>u;
-        tin>>t;
-        cout<<t<<" | "<<u<<"\n";
-        if(t!=u) return 0;
-    }
     while(!tin.eof()){
         uin>>u;
         tin>>t;
-        cout<<t<<" || "<<u<<"\n";
         if(t!=u) return 0;
     }
     return 1;

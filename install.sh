@@ -1,2 +1,0 @@
-#!/bin/bash
-HADRIAN, YOU NOOB USE MAKEPKG -SI

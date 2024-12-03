@@ -213,7 +213,7 @@ int main(int argc, char* argv[]) {
             string RunCommand = MakeRunCommand(CurrentTestCase);
             
             time_point<high_resolution_clock> UserProgramStart;
-            titests/ac/run.outme_point<high_resolution_clock> UserProgramStop;
+            time_point<high_resolution_clock> UserProgramStop;
             //Lambda function to run the async process
             auto RunSystem = [&UserProgramStart, &RunCommand, &UserProgramStop]() {
                 UserProgramStart = high_resolution_clock::now();

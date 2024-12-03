@@ -1,43 +1,40 @@
 #include "var.h"
 #include "color.h"
+#include <format>
 
 void ClearCache(){
     system("rm -rf ~/.cache/judgel");
     system("mkdir -p ~/.cache/judgel");
 }
 
+string strip(string s){
+    int n=s.size();
+    string ans="";
+    for(int i =9; i<n; i++) ans+=s[i];
+    return ans;
+}
+
 void PrintHelpPage() {
     
-    cout << ColorGray;
-    cout << "\nUsage: ";
-    cout << ColorReset;
+    cout << "\nCommand: ";
     cout << ColorGreen;
     cout << "judgel ";
     cout << ColorYellow;
-    cout << "<TIME_LIMIT(s, int)> \n";
-    cout << ColorGray;
-    cout << "More on github.com/udontur/judgel#usage\n\n";
-    cout << ColorReset;
-    
-    cout << ColorGreen;
-    cout << "Judgel";
-    cout << ColorReset;
-    cout << " - Simple local C++ judge\n";
-    cout << "Made with ";
-    cout << ColorGreen;
-    cout << "passion";
-    cout << ColorReset;
-    cout << ", by ";
-    cout << ColorGreen;
-    cout << "Hadrian (@udontur)\n";
+    cout << "<TIME_LIMIT> \n";
     cout << ColorReset;
     cout << ColorGray;
-    cout << "Source: github.com/udontur/judgel\n";
-    cout << "MIT license - Copyright (c) 2024 Hadrian Lau (github.com/udontur)\n\n";
-    cout  << ColorReset;
+    cout << "Leave the time limit empty for a 1 second time limit\n\n";
+    cout << ColorReset;
+    cout << "Prerequisites\n";
+    cout << "   - Testcase folder name: \033[34m\"testcase\"\033[0m\n";
+    cout << "   - Code file name: \033[34m\"main.cpp\"\033[0m\n";
+    cout << "   - Testcases format: \033[34mABC.in\033[0m and \033[34mABC.out\033[0m\n\n";
+    cout << ColorGray;
+    cout << "More: https://github.com/udontur/judgel\n";
+    cout << ColorReset;
 }
 
-bool isac(path ctcout){
+bool OutputComparer(path ctcout){
     ifstream tin (ctcout);
     ifstream uin (usrout);
     string t, u;
@@ -48,4 +45,3 @@ bool isac(path ctcout){
     }
     return 1;
 }
-

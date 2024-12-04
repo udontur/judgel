@@ -11,6 +11,16 @@
   </p>
 </div>
 
+## Features
+- Available verdicts:
+  1. Accepted
+  2. Wrong Answer
+  3. Time Limit Exceeded
+  4. Runtime Error
+  5. Compilation Error
+- Simple to install
+- Simple to use
+
 ## Installation (Linux)
 1. Clone the repository
 ```sh
@@ -27,20 +37,21 @@ make install
 > [!TIP]
 > Press ```ctrl``` + ```shift``` + ```v``` to paste in the terminal.
 
+## Prerequisites
+1. Testcase folder name must be ```testcase```
+	- Testcase file format must be ```ABC.in``` and ```ABC.out```
+2. Code file name must be ```main.cpp```
 ## Usage
 Run the following command in your **code directory**:
 ```sh
 judgel <TIME LIMIT>
 ```
 > [!IMPORTANT]
-> The time limit must be an integer.
+> The time limit must be an **integer**.
 
 > [!TIP]
 > 1. Leave the time limit blank for a 1 second time limit.
 > 2. ```cd /path/to/dir``` to navigate to your code directory
 
-## Prerequisites
-1. Testcase folder name must be ```testcase```
-2. Code file name must be ```main.cpp```
-3. Testcase file format must be ```ABC.in``` and ```ABC.out```
-
+## Demo
+//TODO: Video demo

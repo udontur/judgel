@@ -2,7 +2,7 @@
 <div align="center">
   <h1 align="center">Judgel</h3>
   <p align="center">
-    ⚖️ Simple local C++ judge
+    ⚖️ Simple local C++ CLI judge
     <br />
     <br />
     <a href="https://github.com/udontur/judgel/issues/new">Report Bug</a>
@@ -12,6 +12,7 @@
 </div>
 
 ## ⭐ Features
+- Command line interface
 - Available verdicts:
   1. Accepted
   2. Wrong Answer

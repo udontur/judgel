@@ -1,0 +1,2 @@
+#!/bin/bash
+/home/udontur/udontur/github/judgel/app/judgel.out $1

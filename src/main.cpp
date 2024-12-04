@@ -27,68 +27,20 @@ const path usrprg = homefolder + "/.cache/judgel/usr.out";
 #define ColorYellow "\033[33m"
 #define ColorBlue "\033[34m"
 #define ColorGray "\033[90m"
+#define DelLine "\033[1A\r\033[K"
 
-void ClearCache() {
-    system("rm -rf ~/.cache/judgel");
-    system("mkdir -p ~/.cache/judgel");
-}
-
-string strip(string s) {
-    int n = s.size();
-    string ans = "";
-    for (int i = 9; i < n; i++) ans += s[i];
-    return ans;
-}
-
-void PrintHelpPage() {
-
-    cout << "\nCommand: ";
-    cout << ColorGreen;
-    cout << "judgel ";
-    cout << ColorYellow;
-    cout << "<TIME_LIMIT> \n";
-    cout << ColorReset;
-    cout << ColorGray;
-    cout << "Leave the time limit empty for a 1 second time limit\n\n";
-    cout << ColorReset;
-    cout << "Prerequisites\n";
-    cout << "   - Testcase folder name: \033[34m\"testcase\"\033[0m\n";
-    cout << "   - Code file name: \033[34m\"main.cpp\"\033[0m\n";
-    cout << "   - Testcases format: \033[34mABC.in\033[0m and \033[34mABC.out\033[0m\n\n";
-    cout << ColorGray;
-    cout << "More: https://github.com/udontur/judgel\n";
-    cout << ColorReset;
-}
-
-bool OutputComparer(path ctcout) {
-    ifstream tin(ctcout);
-    ifstream uin(usrout);
-    string t, u;
-    while (!tin.eof()) {
-        uin >> u;
-        tin >> t;
-        if (t != u) return 0;
-    }
-    return 1;
-}
+void ClearCache();
+void PrintHelpPage();
+string strip(string s);
+bool OutputComparer(path ctcout);
 
 int main(int argc, char * argv[]) {
-
-    if (!(argc == 1 || argc == 2)) {
-        cout << ColorRed;
-        cout << "Error: ";
-        cout << ColorReset;
-        cout << "Invalid arguments\n";
-        ClearCache();
-        PrintHelpPage();
-        return 0;
-    }
 
     string times = "1";
     if (argc == 2)
         times = argv[1];
     for (int i = 0; i < times.size(); i++) {
-        if (argv[1][i] <= '0' || argv[1][i] >= '9') {
+        if (!(times[i] >= '0' && times[i] <= '9')) {
             cout << ColorRed;
             cout << "Error: ";
             cout << ColorReset;
@@ -121,7 +73,6 @@ int main(int argc, char * argv[]) {
 
     ClearCache();
 
-    //system("clear");
     cout << ColorGray;
     cout << "Compiling program...\n";
     cout << ColorReset;
@@ -138,7 +89,7 @@ int main(int argc, char * argv[]) {
         return 0;
     }
 
-    cout << "\033[1A\r\033[K";
+    cout << DelLine;
 
     vector < string > tculp;
     for (path CurrentTestCase: recursive_directory_iterator("testcase")) {
@@ -220,4 +171,47 @@ int main(int argc, char * argv[]) {
     ClearCache();
     return 0;
 
+}
+
+void ClearCache() {
+    system("rm -rf ~/.cache/judgel");
+    system("mkdir -p ~/.cache/judgel");
+}
+
+string strip(string s) {
+    int n = s.size();
+    string ans = "";
+    for (int i = 9; i < n; i++) ans += s[i];
+    return ans;
+}
+
+void PrintHelpPage() {
+    cout << "\nCommand: ";
+    cout << ColorGreen;
+    cout << "judgel ";
+    cout << ColorYellow;
+    cout << "<TIME_LIMIT> \n";
+    cout << ColorReset;
+    cout << ColorGray;
+    cout << "Leave the time limit empty for a 1 second time limit\n\n";
+    cout << ColorReset;
+    cout << "Prerequisites\n";
+    cout << "   - Testcase folder name: \033[34m\"testcase\"\033[0m\n";
+    cout << "   - Code file name: \033[34m\"main.cpp\"\033[0m\n";
+    cout << "   - Testcases format: \033[34mABC.in\033[0m and \033[34mABC.out\033[0m\n\n";
+    cout << ColorGray;
+    cout << "More: https://github.com/udontur/judgel\n";
+    cout << ColorReset;
+}
+
+bool OutputComparer(path ctcout) {
+    ifstream tin(ctcout);
+    ifstream uin(usrout);
+    string t, u;
+    while (!tin.eof()) {
+        uin >> u;
+        tin >> t;
+        if (t != u) return 0;
+    }
+    return 1;
 }

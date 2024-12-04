@@ -39,9 +39,11 @@ make install
 > Press ```ctrl``` + ```shift``` + ```v``` to paste in the terminal.
 
 ## ⚙️ Prerequisites
-1. Testcase folder name must be ```testcase```
-	- Testcase file format must be ```ABC.in``` and ```ABC.out```
-2. Code file name must be ```main.cpp```
+1. Testcase folder name: ```testcase```
+	- Testcase file format: ```ABC.in``` and ```ABC.out```
+2. Code file name: ```main.cpp```
+> [!NOTE]
+> Unexpected error may be produced if these conditions are not satisfied
 ## 🔧 Usage
 Run the following command in your **code directory**:
 ```sh

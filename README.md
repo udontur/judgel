@@ -43,7 +43,7 @@ make install
 	- Testcase file format: ```ABC.in``` and ```ABC.out```
 2. Code file name: ```main.cpp```
 > [!NOTE]
-> Unexpected error may be produced if these conditions are not satisfied
+> Unexpected error may be produced if these conditions are not satisfied.
 ## 🔧 Usage
 Run the following command in your **code directory**:
 ```sh

@@ -24,7 +24,7 @@
 
 ## 🛠️ Installation (Linux)
 > [!NOTE]
-> The ```make``` and ```g++``` package must be install in your system
+> The ```make``` and ```g++``` package must be installed on your system
 1. Clone the repository
 ```sh
 git clone https://github.com/udontur/judgel.git

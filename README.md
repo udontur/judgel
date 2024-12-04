@@ -23,6 +23,8 @@
 - Simple to use
 
 ## 🛠️ Installation (Linux)
+> [!NOTE]
+> The ```make``` and ```g++``` command must be install in your system
 1. Clone the repository
 ```sh
 git clone https://github.com/udontur/judgel.git

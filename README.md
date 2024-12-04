@@ -7,11 +7,11 @@
     <br />
     <a href="https://github.com/udontur/judgel/issues/new">Report Bug</a>
     ·
-    <a href="https://github.com/udontur">Made with passion by Hadrian</a>
+    <a href="https://hadrianlau.com">Made with passion by Hadrian</a>
   </p>
 </div>
 
-## Features
+## ⭐ Features
 - Available verdicts:
   1. Accepted
   2. Wrong Answer
@@ -21,7 +21,7 @@
 - Simple to install
 - Simple to use
 
-## Installation (Linux)
+## 🛠️ Installation (Linux)
 1. Clone the repository
 ```sh
 git clone https://github.com/udontur/judgel.git
@@ -37,11 +37,11 @@ make install
 > [!TIP]
 > Press ```ctrl``` + ```shift``` + ```v``` to paste in the terminal.
 
-## Prerequisites
+## ⚙️ Prerequisites
 1. Testcase folder name must be ```testcase```
 	- Testcase file format must be ```ABC.in``` and ```ABC.out```
 2. Code file name must be ```main.cpp```
-## Usage
+## 🔧 Usage
 Run the following command in your **code directory**:
 ```sh
 judgel <TIME LIMIT>
@@ -53,5 +53,5 @@ judgel <TIME LIMIT>
 > 1. Leave the time limit blank for a 1 second time limit.
 > 2. ```cd /path/to/dir``` to navigate to your code directory
 
-## Demo
+## 💾 Demo
 //TODO: Video demo

@@ -55,4 +55,4 @@ judgel <TIME LIMIT>
 > 2. ```cd /path/to/dir``` to navigate to your code directory
 
 ## 💾 Demo
-//TODO: Video demo
+[![Watch the Demo](https://www.youtube.com/watch?v=e7oIRxXZv3U)](https://www.youtube.com/watch?v=e7oIRxXZv3U)

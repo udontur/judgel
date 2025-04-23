@@ -34,8 +34,7 @@ environment.systemPackages = with pkgs; [
 1. Testcase folder name: ```testcase```
 	- Testcase file format: ```JUD.in``` and ```JUD.out```
 2. Code file name: ```main.cpp```
-> [!NOTE]
-> Unexpected error may be produced if these conditions are not satisfied.
+
 ## 🔧 Usage
 Run the following command in your **code directory**:
 ```sh

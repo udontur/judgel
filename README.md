@@ -11,16 +11,16 @@
   </p>
 </div>
 
-## ⭐ Features
-- Command line interface
+## ⭐ About
+```judgel``` is a simple C++ offline competitive programming judge. It is straightforward to set up and use. 
+
 - Available verdicts:
   1. Accepted
   2. Wrong Answer
   3. Time Limit Exceeded
   4. Runtime Error
   5. Compilation Error
-- Simple to install
-- Simple to use
+
 
 ## 🛠️ Installation (Linux)
 ```judgel``` is available via the Nix package manager (```unstable``` branch)

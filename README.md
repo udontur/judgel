@@ -26,7 +26,7 @@
 ```judgel``` is available via the Nix package manager (```unstable``` branch)
 ```nix
 environment.systemPackages = with pkgs; [
-    JUDGEL
+    judgel
 ];
 ```
 

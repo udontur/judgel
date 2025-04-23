@@ -6,13 +6,13 @@
 
 stdenv.mkDerivation rec {
   pname = "judgel";
-  version = "2.0.0";
+  version = "1.0.0";
 
   src = fetchFromGitHub {
     owner = "udontur";
     repo = "judgel";
     tag = "v${version}";
-    hash = "sha256-Sr1V6wN+4IDXh3o/zy0hPYdsRfLhyKwlYzu407KMoQA=";
+    hash = "sha256-fIWKPfeSCvEbvLp6J5SMULl4aIfMgCTZHWqst2ihAeE=";
   };
 
   installPhase = ''
@@ -30,4 +30,3 @@ stdenv.mkDerivation rec {
     platforms = lib.intersectLists lib.platforms.linux lib.platforms.x86;
   };
 }
-

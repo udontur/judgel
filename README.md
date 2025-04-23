@@ -22,7 +22,7 @@
 - Simple to install
 - Simple to use
 
-## 🛠️ Installation (Linux: Nix)
+## 🛠️ Installation (Linux)
 ```judgel``` is available via the Nix package manager (```unstable``` branch)
 ```nix
 environment.systemPackages = with pkgs; [

@@ -1,2 +1,2 @@
 install:
-	@g++ ./src/main.cpp -o judgel
+	@g++ -std=c++20 ./src/main.cpp -o judgel

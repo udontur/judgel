@@ -22,27 +22,17 @@
 - Simple to install
 - Simple to use
 
-## 🛠️ Installation (Linux)
-> [!NOTE]
-> The ```make``` and ```g++``` package must be installed on your system
-1. Clone the repository
-```sh
-git clone https://github.com/udontur/judgel.git
+## 🛠️ Installation (Linux: Nix)
+```judgel``` is available via the Nix package manager (```unstable``` branch)
+```nix
+environment.systemPackages = with pkgs; [
+    JUDGEL
+];
 ```
-2. Navigate to the cloned repository
-```sh
-cd judgel
-```
-3. Install ```Judgel```
-```sh
-make install
-```
-> [!TIP]
-> Press ```ctrl``` + ```shift``` + ```v``` to paste in the terminal.
 
 ## ⚙️ Prerequisites
 1. Testcase folder name: ```testcase```
-	- Testcase file format: ```ABC.in``` and ```ABC.out```
+	- Testcase file format: ```JUD.in``` and ```JUD.out```
 2. Code file name: ```main.cpp```
 > [!NOTE]
 > Unexpected error may be produced if these conditions are not satisfied.
@@ -59,4 +49,4 @@ judgel <TIME LIMIT>
 > 2. ```cd /path/to/dir``` to navigate to your code directory
 
 ## 💾 Demo
-[![Watch the Demo](https://img.youtube.com/vi/e7oIRxXZv3U/0.jpg)](https://www.youtube.com/watch?v=e7oIRxXZv3U)
+![](assets/demo.gif)

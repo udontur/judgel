@@ -2,7 +2,7 @@
 <div align="center">
   <h1 align="center">Judgel</h3>
   <p align="center">
-    ⚖️ Simple local C++ CLI judge
+    ⚖️ Simple local C++ Ccompetitive programming judge
     <br />
     <br />
     <a href="https://github.com/udontur/judgel/issues/new">Report Bug</a>
@@ -12,7 +12,7 @@
 </div>
 
 ## ⭐ About
-```judgel``` is a simple C++ offline competitive programming judge. It is straightforward to set up and use. 
+```judgel``` is a simple local C++ competitive programming judge. It is straightforward to set up and use. 
 
 - Available verdicts:
   1. Accepted
@@ -23,12 +23,15 @@
 
 
 ## 🛠️ Installation (Linux)
-```judgel``` is available via the Nix package manager (```unstable``` branch)
+1. Add the Nix flake to your ```flake.nix``` input:
 ```nix
-environment.systemPackages = with pkgs; [
-    judgel
-];
+judgel.url="github:udontur/judgel";
 ```
+2. Add the package to your NixOS ```configuration.nix```:
+```nix
+inputs.judgel.default
+```
+3. Rebuild your Nix configuration.
 
 ## ⚙️ Prerequisites
 1. Testcase folder name: ```testcase```
@@ -36,6 +39,7 @@ environment.systemPackages = with pkgs; [
 2. Code file name: ```main.cpp```
 
 ## 🔧 Usage
+
 Run the following command in your **code directory**:
 ```sh
 judgel <TIME LIMIT>
@@ -48,4 +52,8 @@ judgel <TIME LIMIT>
 > 2. ```cd /path/to/dir``` to navigate to your code directory
 
 ## 💾 Demo
+Try it out first:
+```sh
+$ nix shell github:udontur/judgel -c judgel
+```
 ![](assets/demo.gif)

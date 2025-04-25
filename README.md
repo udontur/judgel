@@ -2,7 +2,7 @@
 <div align="center">
   <h1 align="center">Judgel</h3>
   <p align="center">
-    ⚖️ Simple local C++ Ccompetitive programming judge
+    ⚖️ Simple local C++ competitive programming judge
     <br />
     <br />
     <a href="https://github.com/udontur/judgel/issues/new">Report Bug</a>

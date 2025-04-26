@@ -29,7 +29,7 @@ judgel.url="github:udontur/judgel";
 ```
 2. Add the package to your NixOS ```configuration.nix```:
 ```nix
-inputs.judgel.default
+inputs.judgel.packages."${system}".default
 ```
 3. Rebuild your Nix configuration.
 

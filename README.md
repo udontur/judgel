@@ -35,7 +35,7 @@ inputs.judgel.default
 
 ## ⚙️ Prerequisites
 1. Testcase folder name: ```testcase```
-	- Testcase file format: ```JUD.in``` and ```JUD.out```
+	- Each testcase file format: ```ABC.in``` and ```ABC.out```
 2. Code file name: ```main.cpp```
 
 ## 🔧 Usage

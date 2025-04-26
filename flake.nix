@@ -3,7 +3,7 @@
   inputs.nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
   outputs =
     { self, nixpkgs }:
-    {
+    let
       default =
         with import nixpkgs {
           system = "x86_64-linux";
@@ -19,5 +19,8 @@
             install -D ./judgel $out/bin/judgel
           '';
         };
+    in
+    {
+      packages.x86_64-linux.default = default;
     };
 }
